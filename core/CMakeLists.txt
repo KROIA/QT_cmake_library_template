@@ -44,7 +44,7 @@ endif()
 
 # QT settings
 if(QT_ENABLE)
-    include(${QT_LOCATOR_CMAKE})
+    #include(${QT_LOCATOR_CMAKE})
 
     set(CMAKE_AUTOMOC ON)
     set(CMAKE_AUTORCC ON)
@@ -59,8 +59,8 @@ endif()
 
 
 # External dependencies from the dependencies.cmake
-use_easy_profiler(EASY_PROFILER_DEPS)
-
+#use_easy_profiler(EASY_PROFILER_DEPS)
+message("DEPS: "${LIBRARIES_FROM_DEPENDENCIES})
 
 
 include_directories(inc)
@@ -134,7 +134,7 @@ set_target_properties(${LIBRARY_NAME_STATIC_PROFILE}        PROPERTIES  LINKER_L
 
 target_link_libraries(${LIBRARY_NAME_SHARED}            ${LIBRARY_DEPENDENCIES})
 target_link_libraries(${LIBRARY_NAME_STATIC}            ${LIBRARY_DEPENDENCIES})
-target_link_libraries(${LIBRARY_NAME_STATIC_PROFILE}    ${LIBRARY_DEPENDENCIES} ${EASY_PROFILER_DEPS})
+target_link_libraries(${LIBRARY_NAME_STATIC_PROFILE}    ${LIBRARY_DEPENDENCIES} ${LIBRARIES_FROM_DEPENDENCIES})
 
 
 target_include_directories(${LIBRARY_NAME_SHARED} PUBLIC
@@ -156,12 +156,12 @@ target_include_directories(${LIBRARY_NAME_STATIC_PROFILE} PUBLIC
 # Define the install path
 message("Installation to path: ${CMAKE_INSTALL_PREFIX}/bin")
 message("Installation to path: ${INSTALL_LIB_PATH}")
-install(TARGETS ${LIBRARY_NAME_SHARED} ${LIBRARY_NAME_STATIC}  ${LIBRARY_NAME_STATIC_PROFILE} ${EASY_PROFILER_DEPS} DESTINATION "${INSTALL_BIN_PATH}")
+install(TARGETS ${LIBRARY_NAME_SHARED} ${LIBRARY_NAME_STATIC}  ${LIBRARY_NAME_STATIC_PROFILE} ${LIBRARIES_FROM_DEPENDENCIES} DESTINATION "${INSTALL_BIN_PATH}")
 install(TARGETS ${LIBRARY_NAME_SHARED} ${LIBRARY_NAME_STATIC}  ${LIBRARY_NAME_STATIC_PROFILE} DESTINATION "${INSTALL_LIB_PATH}")
 
 copyLibraryHeaders("${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_PATH}" "${CMAKE_INSTALL_PREFIX}/include" "${LIBRARY_NAME}")
 
 
-if(QT_ENABLE AND QT_DEPLOY)
-    DEPLOY_QT(${QT_PATH} "$<TARGET_FILE_DIR:profiler_gui>/$<TARGET_FILE_NAME:profiler_gui>" ${INSTALL_BIN_PATH})
-endif()
+#if(QT_ENABLE AND QT_DEPLOY)
+#    DEPLOY_QT(${QT_PATH} "$<TARGET_FILE_DIR:profiler_gui>/$<TARGET_FILE_NAME:profiler_gui>" ${INSTALL_BIN_PATH})
+#endif()

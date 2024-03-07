@@ -46,10 +46,12 @@ if(PARALLEL_BUILD)
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /MP")
 endif()
 
+include(${QT_LOCATOR_CMAKE})
 
 include(utility.cmake)
 include(dependencies.cmake)
 
+
 add_subdirectory(core)
-add_subdirectory(Examples)
+add_subdirectory(examples)
 

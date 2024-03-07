@@ -2,8 +2,6 @@
 #include "LibraryNameShort_base.h"
 #include <sstream>
 
-#define BUILD_TYPE_DEBUG 0
-#define BUILD_TYPE_RELEASE 1
 
 
 namespace LibraryNamespace
@@ -44,12 +42,17 @@ namespace LibraryNamespace
 #endif
 
 		// Build type
+		enum class BuildType
+		{
+			debug,
+			release
+		};
 #ifdef NDEBUG
 		static constexpr const char* buildTypeStr		= "Release";
-		static constexpr const int   buildType			= BUILD_TYPE_RELEASE;
+		static constexpr const BuildType buildType		= BuildType::release;
 #else
 		static constexpr const char* buildTypeStr		= "Debug";
-		static constexpr const int   buildType			= BUILD_TYPE_DEBUG;
+		static constexpr const BuildType buildType		= BuildType::debug;
 #endif
 
 		static const std::string& versionStr()
