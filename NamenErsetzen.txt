@@ -1,0 +1,25 @@
+File: CMakeSettings.json
+	Profiling abteil: "cmakeCommandArgs": "-D<LIB_NAME_PROFILING>=1",
+	<LIB_NAME_PROFILING> ersetzen mit dem profiling define
+	für debug & release
+
+
+File: CMakeLists.txt
+	project(<LibraryName>)
+
+header/src files:
+	LibraryNamespace -> namespace namen für die Library
+	Werte Abfüllen in LibraryNameInfo.h
+	
+	ersetzen:
+	LIBRARY_NAME_LIB 
+	LIBRARY_NAME_EXPORT
+	LIBRARY_NAME_SHORT_UNUSED
+	LIBRARY_NAME_SHORT_CONSOLE
+	LIBRARY_NAME_SHORT_CONSOLE_FUNCTION
+	LIBRARY_NAME_SHORT_DEBUG
+	LIBRARY_NAME_SHORT_CONSOLE_STREAM
+	LIBRARY_NAME_SHORT_PROFILING
+	... Diverse Namen im ..._debug.h
+
+
