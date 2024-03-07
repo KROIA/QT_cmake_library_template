@@ -17,6 +17,9 @@
 
 #ifdef QT_ENABLED
 #pragma message("QT is enabled")
+#ifdef QT_WIDGETS_ENABLED
+#pragma message("QT_WIDGETS is enabled")
+#endif
 #endif
 
 // MSVC Compiler

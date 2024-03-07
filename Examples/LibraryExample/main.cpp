@@ -1,7 +1,9 @@
 #include <QApplication>
 #include <iostream>
 #include "LibraryName.h"
-#include <easy/profiler.h>
+
+#include <QWidget>
+
 
 int main(int argc, char* argv[])
 {
@@ -12,8 +14,9 @@ int main(int argc, char* argv[])
 	QApplication app(argc, argv);
 
 	LibraryNamespace::LibraryInfo::printInfo();
-	EASY_PROFILER_ENABLE;
-	/* do work */
-	profiler::dumpBlocksToFile("test_profile.prof");
+//#ifdef QT_WIDGETS_ENABLED
+	QWidget* widget = LibraryNamespace::LibraryInfo::createInfoWidget();
+	widget->show();
+//#endif
 	return app.exec();
 }

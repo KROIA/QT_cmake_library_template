@@ -2,7 +2,7 @@
 #include "LibraryNameShort_base.h"
 #include <sstream>
 
-
+class QWidget;
 
 namespace LibraryNamespace
 {
@@ -72,5 +72,11 @@ namespace LibraryNamespace
 
 		static void printInfo();
 		static void printInfo(std::ostream& stream);
+
+		// This function is only available when QT_ENABLE was set to ON in the CMakeLists.txt and
+		// QT_MODULES contains the value "Widgets"
+		// It creates a widget with the library information
+		// No button is created to close the widget
+		static QWidget *createInfoWidget(QWidget* parent = nullptr);
 	};
 }
