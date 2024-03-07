@@ -1,4 +1,4 @@
-#include "LibraryNameInfo.h"
+#include "LibraryName_info.h"
 
 #include <iostream>
 

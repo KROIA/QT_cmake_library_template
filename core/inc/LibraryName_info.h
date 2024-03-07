@@ -1,5 +1,5 @@
 #pragma once
-#include "LibraryNameShort_base.h"
+#include "LibraryName_base.h"
 #include <sstream>
 
 class QWidget;

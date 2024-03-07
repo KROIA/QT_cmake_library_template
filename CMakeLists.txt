@@ -59,6 +59,9 @@ set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR})   # Default install path
 set(RELATIVE_BUILD_FOLDER build)                # Relative path to the build folder
 set(RELATIVE_INSTALL_FOLDER lib)                # Relative path to the install folder
 
+
+set(COMPILE_EXAMPLES ON)						# <COMPILE_EXAMPLES>
+set(COMPILE_UNITTESTS ON)						# <COMPILE_TESTS>
 # --------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------
@@ -80,9 +83,12 @@ link_directories(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 include(cmake/QtLocator.cmake)
 include(cmake/utility.cmake)
 include(cmake/dependencies.cmake)
-
+include(cmake/ExampleMaster.cmake)
 
 add_subdirectory(core)
-add_subdirectory(examples)
-add_subdirectory(unitTests)
-
+if(COMPILE_EXAMPLES AND NOT LIBRARY_NAME_NO_EXAMPLE)
+    add_subdirectory(examples)
+endif()
+if(COMPILE_UNITTESTS AND NOT LIBRARY_NAME_NO_UNITTESTS)
+    add_subdirectory(unitTests)
+endif()
