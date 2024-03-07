@@ -1,51 +1,14 @@
 cmake_minimum_required(VERSION 3.20)
 
-## --------------------------------------------------------------------------------
-## -------------------- Project settings ------------------------------------------
-## --------------------------------------------------------------------------------
-
-
-set(LIBRARY_NAME LibraryName)
-set(LIB_DEFINE LIBRARY_NAME_LIB)
-set(LIB_PROFILE_DEFINE LIBRARY_NAME_SHORT_PROFILING)
-
 set(INCLUDE_PATH "inc")
-
-# Enable/disable QT modules for this example
-set(QT_ENABLE ON)
-set(QT_DEPLOY ON)
-# Find the necessary QT modules
-set(QT_MODULES
-    Core
-    Widgets
-    # Add any other required modules here
-)
-
-set(DEBUG_POSTFIX_STR  "-d")
-set(STATIC_POSTFIX_STR "-s")
-set(PROFILING_POSTFIX_STR "-p")
-
-## --------------------------------------------------------------------------------
-## --------------------------------------------------------------------------------
-## --------------------------------------------------------------------------------
-## --------------------------------------------------------------------------------
 
 set(LIBRARY_NAME_STATIC ${LIBRARY_NAME}_static)
 set(LIBRARY_NAME_SHARED ${LIBRARY_NAME}_shared)
 set(LIBRARY_NAME_STATIC_PROFILE ${LIBRARY_NAME_STATIC}_profile)
 
 
-
-if(CMAKE_VERSION VERSION_LESS "3.7.0")
-    set(CMAKE_INCLUDE_CURRENT_DIR ON)
-endif()
-
-
-
 # QT settings
 if(QT_ENABLE)
-    #include(${QT_LOCATOR_CMAKE})
-
     set(CMAKE_AUTOMOC ON)
     set(CMAKE_AUTORCC ON)
     #set(CMAKE_AUTOUIC ON)
@@ -55,16 +18,7 @@ if(QT_ENABLE)
 endif()
 # end QT settings
 
-
-
-
-# External dependencies from the dependencies.cmake
-#use_easy_profiler(EASY_PROFILER_DEPS)
-message("DEPS: "${LIBRARIES_FROM_DEPENDENCIES})
-
-
-include_directories(inc)
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
+include_directories(${INCLUDE_PATH})
 
 FILE_DIRECTORIES(H_FILES *.h)
 FILE_DIRECTORIES(CPP_FILES *.cpp)
@@ -110,31 +64,38 @@ message("Create library with files:")
 FOREACH(file ${SOURCES})
    message("  File: " ${file})
 ENDFOREACH()
-message("Using external dependencies:")
-FOREACH(dep ${extDependencies})
-   message("  Library: " ${dep})
-ENDFOREACH()
 
-
-
+# Set defines for inside the code of the library
+list(APPEND DEFINES_FOR_ALL_PROFILES ${LIB_DEFINE})
+if(QT_ENABLE)
+    list(APPEND DEFINES_FOR_ALL_PROFILES QT_ENABLED)
+endif()
+list(APPEND DEFINES_FOR_SHARED_LIB ${DEFINES_FOR_ALL_PROFILES} BUILD_SHARED)
+list(APPEND DEFINES_FOR_STATIC_LIB ${DEFINES_FOR_ALL_PROFILES} BUILD_STATIC)
+list(APPEND DEFINES_FOR_STATIC_PROFILE_LIB ${DEFINES_FOR_ALL_PROFILES} BUILD_STATIC ${LIB_PROFILE_DEFINE})
 
 
 add_library(${LIBRARY_NAME_SHARED}                          SHARED      ${SOURCES})
 add_library(${LIBRARY_NAME_STATIC}                          STATIC      ${SOURCES})
 add_library(${LIBRARY_NAME_STATIC_PROFILE}                  STATIC      ${SOURCES})
  
-target_compile_definitions(${LIBRARY_NAME_SHARED}           PRIVATE                  ${LIB_DEFINE})
-target_compile_definitions(${LIBRARY_NAME_STATIC}           PRIVATE     BUILD_STATIC ${LIB_DEFINE})
-target_compile_definitions(${LIBRARY_NAME_STATIC_PROFILE}   PRIVATE     BUILD_STATIC ${LIB_DEFINE}  ${LIB_PROFILE_DEFINE})
+target_compile_definitions(${LIBRARY_NAME_SHARED}           PRIVATE     ${DEFINES_FOR_SHARED_LIB})
+target_compile_definitions(${LIBRARY_NAME_STATIC}           PRIVATE     ${DEFINES_FOR_STATIC_LIB})
+target_compile_definitions(${LIBRARY_NAME_STATIC_PROFILE}   PRIVATE     ${DEFINES_FOR_STATIC_PROFILE_LIB})
 
 set_target_properties(${LIBRARY_NAME_SHARED}                PROPERTIES  LINKER_LANGUAGE CXX  OUTPUT_NAME "${LIBRARY_NAME}"                                              DEBUG_POSTFIX ${DEBUG_POSTFIX_STR})
 set_target_properties(${LIBRARY_NAME_STATIC}                PROPERTIES  LINKER_LANGUAGE CXX  OUTPUT_NAME "${LIBRARY_NAME}${STATIC_POSTFIX_STR}"                         DEBUG_POSTFIX ${DEBUG_POSTFIX_STR})
 set_target_properties(${LIBRARY_NAME_STATIC_PROFILE}        PROPERTIES  LINKER_LANGUAGE CXX  OUTPUT_NAME "${LIBRARY_NAME}${STATIC_POSTFIX_STR}${PROFILING_POSTFIX_STR}" DEBUG_POSTFIX ${DEBUG_POSTFIX_STR})
 
 
-target_link_libraries(${LIBRARY_NAME_SHARED}            ${LIBRARY_DEPENDENCIES})
-target_link_libraries(${LIBRARY_NAME_STATIC}            ${LIBRARY_DEPENDENCIES})
-target_link_libraries(${LIBRARY_NAME_STATIC_PROFILE}    ${LIBRARY_DEPENDENCIES} ${LIBRARIES_FROM_DEPENDENCIES})
+# External dependencies from the dependencies folder
+message("Extern dependencies for shared lib: [${DEPENDENCIES_FOR_SHARED_LIB}]")
+message("Extern dependencies for static lib: [${DEPENDENCIES_FOR_STATIC_LIB}]")
+message("Extern dependencies for static profiling lib: [${DEPENDENCIES_FOR_STATIC_PROFILE_LIB}]")
+
+target_link_libraries(${LIBRARY_NAME_SHARED}            ${LIBRARY_DEPENDENCIES} ${DEPENDENCIES_FOR_SHARED_LIB})
+target_link_libraries(${LIBRARY_NAME_STATIC}            ${LIBRARY_DEPENDENCIES} ${DEPENDENCIES_FOR_STATIC_LIB})
+target_link_libraries(${LIBRARY_NAME_STATIC_PROFILE}    ${LIBRARY_DEPENDENCIES} ${DEPENDENCIES_FOR_STATIC_PROFILE_LIB})
 
 
 target_include_directories(${LIBRARY_NAME_SHARED} PUBLIC
@@ -161,7 +122,3 @@ install(TARGETS ${LIBRARY_NAME_SHARED} ${LIBRARY_NAME_STATIC}  ${LIBRARY_NAME_ST
 
 copyLibraryHeaders("${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_PATH}" "${CMAKE_INSTALL_PREFIX}/include" "${LIBRARY_NAME}")
 
-
-#if(QT_ENABLE AND QT_DEPLOY)
-#    DEPLOY_QT(${QT_PATH} "$<TARGET_FILE_DIR:profiler_gui>/$<TARGET_FILE_NAME:profiler_gui>" ${INSTALL_BIN_PATH})
-#endif()
