@@ -9,11 +9,11 @@
 ##
 ## ********************************************************************************
 ##  !!! IMPORTANT !!!
-##  DO NOT CHANGE/REMOVE THE COMMENTS MARKED WITH <...>
-##  THEY ARE USED BY THE SCRIPTS TO AUTOMATICALLY 
-##  CONFIGURE THE PROJECT FILES.
-##  YOU CAN ADD YOUR OWN COMMENTS, BUT DO NOT REMOVE
-##  THE EXISTING ONES.
+##  CMAKE SETTINGS WITH THE MARK "<AUTO_REPLACED>" ARE AUTOMATICLY REPLACED
+##  BY THE LIBRARY MANAGER. DO NOT CHANGE NAMES OF SUCH PARAMETERS IF YOU USE
+##  THE LIBRARY MANAGER.
+##
+##
 ## ********************************************************************************
 ##
 ## --------------------------------------------------------------------------------
@@ -21,35 +21,34 @@
 ## --------------------------------------------------------------------------------
 
 # Name of the library
-set(LIBRARY_NAME LibraryName)                   # <LIBRARY_NAME>
+set(LIBRARY_NAME LibraryName)                   # <AUTO_REPLACED>
 
 # Define is only active if the library is built
-set(LIB_DEFINE LIBRARY_NAME_LIB)                # <LIB_DEFINE>
+set(LIB_DEFINE LIBRARY_NAME_LIB)                # <AUTO_REPLACED>
 
 # macro to enable profiling
 set(LIB_PROFILE_DEFINE LIBRARY_NAME_SHORT_PROFILING)  # <LIB_PROFILE_DEFINE>  
 
 
 # Enable/disable QT modules
-set(QT_ENABLE ON)	                            # <QT_ENABLE> 
+set(QT_ENABLE ON)	                            # <AUTO_REPLACED> 
 # Enable/disable QT deployment
-set(QT_DEPLOY ON)	                            # <QT_DEPLOY> 
+set(QT_DEPLOY ON)	                            # <AUTO_REPLACED> 
 
-# Needed QT modules
-set(QT_MODULES                                  # <QT_MODULES> 
+# Needed QT modules                             # <AUTO_REPLACED> 
+set(QT_MODULES                                  
     Core
     Widgets
-    # Add any other required modules here
 )
 
 # Library file name settings
-set(DEBUG_POSTFIX_STR  "-d")                    # <DEBUG_POSTFIX_STR> 
-set(STATIC_POSTFIX_STR "-s")                    # <STATIC_POSTFIX_STR> 
-set(PROFILING_POSTFIX_STR "-p")                 # <PROFILING_POSTFIX_STR> 
+set(DEBUG_POSTFIX_STR  "-d")                    # <AUTO_REPLACED> 
+set(STATIC_POSTFIX_STR "-s")                    # <AUTO_REPLACED> 
+set(PROFILING_POSTFIX_STR "-p")                 # <AUTO_REPLACED>  
 
 # Langauge settings
-set(CMAKE_CXX_STANDARD 23)                      # <CMAKE_CXX_STANDARD> 
-set(CMAKE_CXX_STANDARD_REQUIRED ON)             # <CMAKE_CXX_STANDARD_REQUIRED> 
+set(CMAKE_CXX_STANDARD 23)                      # <AUTO_REPLACED> 
+set(CMAKE_CXX_STANDARD_REQUIRED ON)             # <AUTO_REPLACED> 
 
 # --------------------------------------------------------------------------------
 # -------------------- Build settings --------------------------------------------
@@ -60,8 +59,8 @@ set(RELATIVE_BUILD_FOLDER build)                # Relative path to the build fol
 set(RELATIVE_INSTALL_FOLDER lib)                # Relative path to the install folder
 
 
-set(COMPILE_EXAMPLES ON)						# <COMPILE_EXAMPLES>
-set(COMPILE_UNITTESTS ON)						# <COMPILE_TESTS>
+set(COMPILE_EXAMPLES ON)						# <AUTO_REPLACED> 
+set(COMPILE_UNITTESTS ON)						# <AUTO_REPLACED> 
 # --------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------
@@ -92,3 +91,8 @@ endif()
 if(COMPILE_UNITTESTS AND NOT LIBRARY_NAME_NO_UNITTESTS)
     add_subdirectory(unitTests)
 endif()
+
+## LIBRARY MANAGER DATA --- DO NOT CHANGE ANYTHING HERE
+## 
+## LIBRARY_MANAGER_DATA
+##

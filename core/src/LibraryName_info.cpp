@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#if defined(QT_CORE_LIB) and defined(QT_WIDGETS_LIB)
+#if (defined(QT_CORE_LIB) && defined(QT_WIDGETS_LIB))
 	#include <QWidget>
 	#include <QLabel>
 	#include <QVBoxLayout>
@@ -72,6 +72,7 @@ namespace LibraryNamespace
 #else
 	QWidget* LibraryInfo::createInfoWidget(QWidget* parent)
 	{
+		LIBRARY_NAME_SHORT_UNUSED(parent);
 		return nullptr;
 	}
 #endif
