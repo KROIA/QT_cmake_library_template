@@ -15,6 +15,7 @@ FetchContent_Declare(
 set(EASY_PROFILER_NO_SAMPLES True)
 set(BUILD_SHARED_LIBS OFF CACHE BOOL "Build easy_profiler as static library.")
 FetchContent_MakeAvailable(EASY_PROFILER)
+set(EASY_PROFILER_IS_AVAILABLE ON)
 
 
 # Add this library to the specific profiles of this project
