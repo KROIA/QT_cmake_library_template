@@ -1,4 +1,4 @@
-﻿## USER_SECTION_START
+﻿## USER_SECTION_START 1
 cmake_minimum_required(VERSION 3.20)
 ## USER_SECTION_END
 
@@ -18,6 +18,10 @@ cmake_minimum_required(VERSION 3.20)
 ##
 ## ********************************************************************************
 ##
+## You can add your own settings in between the USER SECTION START and USER SECTION END markers.
+## Do not add more USER SECTION START or USER SECTION END markers. 
+## Code outside of the USER SECTION START and USER SECTION END markers will be overwritten by the library manager.
+## 
 ## --------------------------------------------------------------------------------
 ## -------------------- Project settings ------------------------------------------
 ## --------------------------------------------------------------------------------
@@ -52,7 +56,7 @@ set(PROFILING_POSTFIX_STR "-p")                 # <AUTO_REPLACED>
 set(CMAKE_CXX_STANDARD 23)                      # <AUTO_REPLACED> 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)             # <AUTO_REPLACED> 
 
-## USER_SECTION_START
+## USER_SECTION_START 2
 
 ## USER_SECTION_END
 
@@ -68,7 +72,7 @@ set(RELATIVE_INSTALL_FOLDER lib)                # Relative path to the install f
 set(COMPILE_EXAMPLES ON)						# <AUTO_REPLACED> 
 set(COMPILE_UNITTESTS ON)						# <AUTO_REPLACED> 
 
-## USER_SECTION_START
+## USER_SECTION_START 3
 
 ## USER_SECTION_END
 
@@ -89,7 +93,7 @@ set(INSTALL_BIN_PATH "${CMAKE_INSTALL_PREFIX}/bin")
 
 link_directories(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 
-## USER_SECTION_START
+## USER_SECTION_START 4
 
 ## USER_SECTION_END
 
@@ -99,7 +103,7 @@ include(cmake/utility.cmake)
 include(cmake/dependencies.cmake)
 include(cmake/ExampleMaster.cmake)
 
-## USER_SECTION_START
+## USER_SECTION_START 5
 
 ## USER_SECTION_END
 
@@ -111,6 +115,6 @@ if(COMPILE_UNITTESTS AND NOT LIBRARY_NAME_NO_UNITTESTS)
     add_subdirectory(unitTests)
 endif()
 
-## USER_SECTION_START
+## USER_SECTION_START 6
 
 ## USER_SECTION_END

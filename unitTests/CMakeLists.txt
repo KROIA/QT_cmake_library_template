@@ -3,7 +3,7 @@
 # Get a list of all subdirectories in the current directory
 file(GLOB subdirectories RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *)
 
-## USER_SECTION_START
+## USER_SECTION_START 1
 
 ## USER_SECTION_END
 
@@ -14,6 +14,6 @@ foreach(subdirectory ${subdirectories})
     endif()
 endforeach()
 
-## USER_SECTION_START
+## USER_SECTION_START 2
 
 ## USER_SECTION_END
