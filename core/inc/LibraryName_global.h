@@ -1,6 +1,5 @@
 #pragma once
 
-#include <QtCore/qglobal.h>
 #include <chrono>
 
 #ifndef BUILD_STATIC

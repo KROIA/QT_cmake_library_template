@@ -1,4 +1,6 @@
-﻿cmake_minimum_required(VERSION 3.20)
+﻿## USER_SECTION_START
+cmake_minimum_required(VERSION 3.20)
+## USER_SECTION_END
 
 ## INFO
 ## Template version: 1.0.0
@@ -50,6 +52,10 @@ set(PROFILING_POSTFIX_STR "-p")                 # <AUTO_REPLACED>
 set(CMAKE_CXX_STANDARD 23)                      # <AUTO_REPLACED> 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)             # <AUTO_REPLACED> 
 
+## USER_SECTION_START
+
+## USER_SECTION_END
+
 # --------------------------------------------------------------------------------
 # -------------------- Build settings --------------------------------------------
 # --------------------------------------------------------------------------------
@@ -61,6 +67,11 @@ set(RELATIVE_INSTALL_FOLDER lib)                # Relative path to the install f
 
 set(COMPILE_EXAMPLES ON)						# <AUTO_REPLACED> 
 set(COMPILE_UNITTESTS ON)						# <AUTO_REPLACED> 
+
+## USER_SECTION_START
+
+## USER_SECTION_END
+
 # --------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------
@@ -78,11 +89,19 @@ set(INSTALL_BIN_PATH "${CMAKE_INSTALL_PREFIX}/bin")
 
 link_directories(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 
+## USER_SECTION_START
+
+## USER_SECTION_END
+
 
 include(cmake/QtLocator.cmake)
 include(cmake/utility.cmake)
 include(cmake/dependencies.cmake)
 include(cmake/ExampleMaster.cmake)
+
+## USER_SECTION_START
+
+## USER_SECTION_END
 
 add_subdirectory(core)
 if(COMPILE_EXAMPLES AND NOT LIBRARY_NAME_NO_EXAMPLE)
@@ -92,7 +111,6 @@ if(COMPILE_UNITTESTS AND NOT LIBRARY_NAME_NO_UNITTESTS)
     add_subdirectory(unitTests)
 endif()
 
-## LIBRARY MANAGER DATA --- DO NOT CHANGE ANYTHING HERE
-## 
-## LIBRARY_MANAGER_DATA
-##
+## USER_SECTION_START
+
+## USER_SECTION_END

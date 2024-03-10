@@ -1,4 +1,6 @@
+## USER_SECTION_START
 cmake_minimum_required(VERSION 3.20)
+## USER_SECTION_END
 
 set(INCLUDE_PATH "inc")
 
@@ -29,6 +31,10 @@ set(SOURCES
     ${CPP_FILES}
     ${H_FILES}
 )
+
+## USER_SECTION_START
+
+## USER_SECTION_END
 
 if(QT_ENABLE)
     # Search for QT specific files
@@ -102,6 +108,10 @@ if(EASY_PROFILER_IS_AVAILABLE)
     set_target_properties(${LIBRARY_NAME_STATIC_PROFILE}        PROPERTIES  LINKER_LANGUAGE CXX  OUTPUT_NAME "${LIBRARY_NAME}${STATIC_POSTFIX_STR}${PROFILING_POSTFIX_STR}" DEBUG_POSTFIX ${DEBUG_POSTFIX_STR})
 endif()
 
+## USER_SECTION_START
+
+## USER_SECTION_END
+
 # External dependencies from the dependencies folder
 message("Extern dependencies for shared lib: [${DEPENDENCIES_FOR_SHARED_LIB}]")
 message("Extern dependencies for static lib: [${DEPENDENCIES_FOR_STATIC_LIB}]")
@@ -115,6 +125,9 @@ if(EASY_PROFILER_IS_AVAILABLE)
     target_link_libraries(${LIBRARY_NAME_STATIC_PROFILE}    ${LIBRARY_DEPENDENCIES} ${DEPENDENCIES_FOR_STATIC_PROFILE_LIB})
 endif()
 
+## USER_SECTION_START
+
+## USER_SECTION_END
 
 target_include_directories(${LIBRARY_NAME_SHARED} PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_PATH}>
@@ -134,6 +147,10 @@ target_include_directories(${LIBRARY_NAME_STATIC_PROFILE} PUBLIC
 )
 endif()
 
+## USER_SECTION_START
+
+## USER_SECTION_END
+
 # Define the install path
 message("Installation to path: ${CMAKE_INSTALL_PREFIX}/bin")
 message("Installation to path: ${INSTALL_LIB_PATH}")
@@ -146,3 +163,7 @@ endif()
 
 copyLibraryHeaders("${CMAKE_CURRENT_SOURCE_DIR}/${INCLUDE_PATH}" "${CMAKE_INSTALL_PREFIX}/include" "${LIBRARY_NAME}")
 
+
+## USER_SECTION_START
+
+## USER_SECTION_END
