@@ -108,7 +108,7 @@ include(cmake/ExampleMaster.cmake)
 ## USER_SECTION_END
 
 add_subdirectory(core)
-if(COMPILE_EXAMPLES AND NOT LIBRARY_NAME_NO_EXAMPLE)
+if(COMPILE_EXAMPLES AND NOT LIBRARY_NAME_NO_EXAMPLES)
     add_subdirectory(examples)
 endif()
 if(COMPILE_UNITTESTS AND NOT LIBRARY_NAME_NO_UNITTESTS)
