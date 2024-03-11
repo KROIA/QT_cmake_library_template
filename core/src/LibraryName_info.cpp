@@ -1,5 +1,9 @@
 #include "LibraryName_info.h"
 
+/// USER_SECTION_START 1
+
+/// USER_SECTION_END
+
 #include <iostream>
 
 #if (defined(QT_CORE_LIB) && defined(QT_WIDGETS_LIB))
@@ -10,8 +14,16 @@
 	#define QT_WIDGETS_AVAILABLE
 #endif
 
+/// USER_SECTION_START 2
+
+/// USER_SECTION_END
+
 namespace LibraryNamespace
 {
+/// USER_SECTION_START 3
+
+/// USER_SECTION_END
+
 	void LibraryInfo::printInfo()
 	{
 		printInfo(std::cout);
@@ -76,4 +88,12 @@ namespace LibraryNamespace
 		return nullptr;
 	}
 #endif
+
+/// USER_SECTION_START 4
+
+/// USER_SECTION_END
 }
+
+/// USER_SECTION_START 5
+
+/// USER_SECTION_END

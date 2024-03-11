@@ -1,5 +1,9 @@
 #pragma once
 
+/// USER_SECTION_START 1
+
+/// USER_SECTION_END
+
 #include <chrono>
 
 #ifndef BUILD_STATIC
@@ -14,12 +18,20 @@
 # define LIBRARY_NAME_EXPORT
 #endif
 
+/// USER_SECTION_START 2
+
+/// USER_SECTION_END
+
 #ifdef QT_ENABLED
 #pragma message("QT is enabled")
 #ifdef QT_WIDGETS_ENABLED
 #pragma message("QT_WIDGETS is enabled")
 #endif
 #endif
+
+/// USER_SECTION_START 3
+
+/// USER_SECTION_END
 
 // MSVC Compiler
 #ifdef _MSC_VER 
@@ -30,10 +42,11 @@ typedef std::chrono::system_clock::time_point TimePoint;
 #endif
 
 
-
-
-
 #define LIBRARY_NAME_SHORT_UNUSED(x) (void)x;
+
+/// USER_SECTION_START 4
+
+/// USER_SECTION_END
 
 #if defined(LIBRARY_NAME_LIB)
 #pragma warning (error : 4715) // not all control paths return a value shuld be an error instead of a warning
@@ -48,3 +61,7 @@ typedef std::chrono::system_clock::time_point TimePoint;
 #pragma warning (error : 4996) // unsafe function calls
 #pragma warning (error : 4018) // signed/unsigned mismatch
 #endif
+
+/// USER_SECTION_START 5
+
+/// USER_SECTION_END
