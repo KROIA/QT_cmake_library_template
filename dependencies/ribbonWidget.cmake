@@ -1,3 +1,5 @@
+## description: simple ribbon widget for QT applications
+
 cmake_minimum_required(VERSION 3.1.0)
 
 
