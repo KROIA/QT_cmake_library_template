@@ -5,7 +5,9 @@
 /// USER_SECTION_END
 
 #include <chrono>
-
+// Params
+// <LIBRARY NAME SHORT>=LIBRARY_NAME_SHORT 
+//
 #ifndef BUILD_STATIC
 #pragma message("LIBRARY_NAME_LIB is a shared library")
 # if defined(LIBRARY_NAME_LIB)
