@@ -1,27 +1,38 @@
-cmake_minimum_required(VERSION 3.1.0)
+## USER_SECTION_START 1
+
+## USER_SECTION_END
 
 # Find the necessary QT modules
+#[[
 set(QT_MODULES
     Core
     Widgets
     Gui
-    # Network
-    # Add any other required modules here
 )
+]]#
+
+## Override the QT_MODULES if you want to use other modules
+## USER_SECTION_START 2
+
+## USER_SECTION_END
 
 set(use_qt ON)
 set(deploy_qt ON)
 set(APP_ICON "${CMAKE_CURRENT_SOURCE_DIR}/AppIcon.rc")
 list(APPEND ADDITONAL_SOURCES ${APP_ICON})
 
-list(APPEND ADDITIONAL_LIBRARIES UnitTest_static) 
-
-## USER_SECTION_START 1
+## USER_SECTION_START 3
 
 ## USER_SECTION_END
 
-exampleMaster(${LIBRARY_NAME} ${LIB_PROFILE_DEFINE} use_qt deploy_qt "${QT_MODULES}" "${ADDITONAL_SOURCES}" "${ADDITIONAL_LIBRARIES}" ${INSTALL_BIN_PATH})
+list(APPEND ADDITIONAL_LIBRARIES UnitTest_static) 
 
-## USER_SECTION_START 2
+## USER_SECTION_START 4
+
+## USER_SECTION_END
+
+exampleMaster(${LIBRARY_NAME} ${LIB_PROFILE_DEFINE} use_qt deploy_qt "${QT_MODULES}" "${ADDITONAL_SOURCES}" "${ADDITIONAL_LIBRARIES}" "${INSTALL_BIN_PATH}")
+
+## USER_SECTION_START 5
 
 ## USER_SECTION_END

@@ -1,9 +1,15 @@
+## USER_SECTION_START 1
 
+## USER_SECTION_END
 
 # Get a list of all subdirectories in the current directory
 file(GLOB subdirectories RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *)
 
-## USER_SECTION_START 1
+## USER_SECTION_START 2
+
+## USER_SECTION_END
+
+## USER_SECTION_START 3
 
 ## USER_SECTION_END
 
@@ -11,9 +17,15 @@ file(GLOB subdirectories RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *)
 foreach(subdirectory ${subdirectories})
     if(IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${subdirectory})
         add_subdirectory(${subdirectory})
+## USER_SECTION_START 4
+
+## USER_SECTION_END
     endif()
+## USER_SECTION_START 5
+
+## USER_SECTION_END
 endforeach()
 
-## USER_SECTION_START 2
+## USER_SECTION_START 6
 
 ## USER_SECTION_END
