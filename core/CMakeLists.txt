@@ -1,3 +1,11 @@
+## 
+## This file will build the library in 3 different ways:
+##  1. Shared library
+##  2. Static library
+##  3. Static library with profiling using easy_profiler
+##     This option is only available if the easy_profiler library is added to the dependencies
+##
+
 ## USER_SECTION_START 1
 
 ## USER_SECTION_END

@@ -1,3 +1,10 @@
+## 
+## This file will include all subdirectories in the current directory
+## Each subdirectory should contain a CMakeLists.txt file
+## 
+##
+
+
 ## USER_SECTION_START 1
 
 ## USER_SECTION_END
@@ -16,16 +23,19 @@ file(GLOB subdirectories RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *)
 # Loop over each subdirectory and add it as a subdirectory in the project
 foreach(subdirectory ${subdirectories})
     if(IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${subdirectory})
-        add_subdirectory(${subdirectory})
 ## USER_SECTION_START 4
 
 ## USER_SECTION_END
-    endif()
+        add_subdirectory(${subdirectory})
 ## USER_SECTION_START 5
+
+## USER_SECTION_END
+    endif()
+## USER_SECTION_START 6
 
 ## USER_SECTION_END
 endforeach()
 
-## USER_SECTION_START 6
+## USER_SECTION_START 7
 
 ## USER_SECTION_END
