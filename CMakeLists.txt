@@ -1,6 +1,8 @@
-﻿## USER_SECTION_START 1
-cmake_minimum_required(VERSION 3.20)
+﻿cmake_minimum_required(VERSION 3.20)
+## USER_SECTION_START 1
+
 ## USER_SECTION_END
+
 
 ## INFO
 ## Template version: 1.0.0
