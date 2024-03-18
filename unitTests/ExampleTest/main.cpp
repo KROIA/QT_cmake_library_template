@@ -1,5 +1,5 @@
 #ifdef QT_ENABLED
-#include <QApplication>
+#include <QCoreApplication>
 #endif
 #include <iostream>
 #include "LibraryName.h"
@@ -8,6 +8,7 @@
 
 #ifdef QT_WIDGETS_ENABLED
 #include <QWidget>
+#include <QApplication>
 #endif
 
 // Instantiate Tests here:
@@ -22,7 +23,11 @@ int main(int argc, char* argv[])
 	QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
 #endif
 #ifdef QT_ENABLED
-	QApplication app(argc, argv);
+	#ifdef QT_WIDGETS_ENABLED
+		QApplication app(argc, argv);
+	#else
+		QCoreApplication app(argc, argv);
+	#endif
 #endif
 
 	LibraryNamespace::LibraryInfo::printInfo();
