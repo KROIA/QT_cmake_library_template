@@ -1,4 +1,4 @@
-## description: simple library to store application settings
+## description: simple library create unit tests
 cmake_minimum_required(VERSION 3.1.0)
 include(FetchContent)
 
