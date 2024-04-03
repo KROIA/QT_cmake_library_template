@@ -1,5 +1,4 @@
 ## description: simple library to store application settings
-include(FetchContent)
 
 # Define the git repository and tag to download from
 set(LIB_NAME AppSettings)								# Change this line

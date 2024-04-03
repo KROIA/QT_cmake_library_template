@@ -1,5 +1,4 @@
 ## description: simple profiler for applications
-include(FetchContent)
 
 # Define the git repository and tag to download from
 set(LIB_NAME EASY_PROFILER)
