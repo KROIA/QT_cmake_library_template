@@ -19,16 +19,17 @@ int main(int argc, char* argv[])
 #ifdef QT_ENABLED
 	QApplication app(argc, argv);
 #endif
-
+	LibraryNamespace::Profiler::start();
 	LibraryNamespace::LibraryInfo::printInfo();
 #ifdef QT_WIDGETS_ENABLED
 	QWidget* widget = LibraryNamespace::LibraryInfo::createInfoWidget();
 	if (widget)
 		widget->show();
 #endif
+	int ret = 0;
 #ifdef QT_ENABLED
-	return app.exec();
-#else
-	return 0;
+	ret = app.exec();
 #endif
+	LibraryNamespace::Profiler::stop((std::string(LibraryNamespace::LibraryInfo::name)+".prof").c_str());
+	return ret;
 }
