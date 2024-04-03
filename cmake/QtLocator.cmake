@@ -4,6 +4,9 @@
 # Note:
 # The variable QT_INSTALL_BASE must be set before this script gets executed
 # The variable points to the base directory where all versions of QT are installed. Default C:\Qt
+# If the variable is empty or not defined, the script try's to search for the installation of the QtCreator to find the 
+# installation folder.
+#
 
 SET(QT_MISSING True)
 
@@ -17,6 +20,14 @@ endfunction()
 # msvc only; mingw will need different logic
 IF(MSVC AND QT_MISSING)
     MESSAGE("Searching for QT installs...")
+
+    if(NOT DEFINED QT_INSTALL_BASE OR "${QT_INSTALL_BASE}" STREQUAL "")
+        # look for user-registry pointing to qtcreator
+        GET_FILENAME_COMPONENT(QT_BIN [HKEY_CURRENT_USER\\Software\\Classes\\Applications\\QtProject.QtCreator.cpp\\shell\\Open\\Command] PATH)
+         # get root path so we can search for 5.3, 5.4, 5.5, etc
+        STRING(REPLACE "/Tools" ";" QT_BIN "${QT_BIN}")
+        LIST(GET QT_BIN 0 QT_INSTALL_BASE)
+    endif()
 
     # get root path so we can search for 5.3, 5.4, 5.5, etc
     FILE(GLOB QT_VERSIONS "${QT_INSTALL_BASE}/5.*")
