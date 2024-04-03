@@ -1,13 +1,11 @@
 # QT cmake library template
 ## Table of content
-- [QT cmake library template](#qt-cmake-library-template)
-  - [Table of content](#table-of-content)
-  - [Overview](#overview)
-  - [Features](#features)
-  - [Note](#note)
-  - [Library structure](#library-structure)
-  - [References](#references)
-  - [Contact](#contact)
+- [Overview](#overview)
+- [Features](#features)
+- [Note](#note)
+- [Library structure](#library-structure)
+- [References](#references)
+- [Contact](#contact)
 ------------------------------------------------------
 ## Overview
 This is a template project used to create c++ libraries using CMake.
