@@ -1,8 +1,8 @@
 #pragma once
 
 #include "UnitTest.h"
-#include <QObject>
-#include <QCoreapplication>
+//#include <QObject>
+//#include <QCoreapplication>
 
 
 
