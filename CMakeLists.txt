@@ -1,11 +1,11 @@
-﻿cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.20)
 ## USER_SECTION_START 1
 
 ## USER_SECTION_END
 
 
 ## INFO
-## Template version: 1.0.0
+## Template version: 1.1.0
 ##
 ## This is a template for a CMake project.
 ## It is designed to be used with the Visual Studio
@@ -27,6 +27,7 @@
 ## --------------------------------------------------------------------------------
 ## -------------------- Project settings ------------------------------------------
 ## --------------------------------------------------------------------------------
+include(cmake/utility.cmake)
 
 # Name of the library
 set(LIBRARY_NAME LibraryName)                   # <AUTO_REPLACED>
@@ -44,13 +45,13 @@ set(QT_ENABLE ON)	                            # <AUTO_REPLACED>
 set(QT_DEPLOY ON)	                            # <AUTO_REPLACED> 
 
 # Needed QT modules                             # <AUTO_REPLACED> 
-set(QT_MODULES                                  
-    Core
-    Widgets
+set(QT_MODULES
+  Core
+  Widgets
 )
 
 # Library file name settings
-set(DEBUG_POSTFIX_STR  "-d")                    # <AUTO_REPLACED> 
+set(DEBUG_POSTFIX_STR "-d")                    # <AUTO_REPLACED> 
 set(STATIC_POSTFIX_STR "-s")                    # <AUTO_REPLACED> 
 set(PROFILING_POSTFIX_STR "-p")                 # <AUTO_REPLACED>  
 
@@ -71,8 +72,8 @@ set(RELATIVE_BUILD_FOLDER build)                # Relative path to the build fol
 set(RELATIVE_INSTALL_FOLDER lib)                # Relative path to the install folder
 
 
-set(COMPILE_EXAMPLES ON)						# <AUTO_REPLACED> 
-set(COMPILE_UNITTESTS ON)						# <AUTO_REPLACED> 
+set_if_not_defined(COMPILE_EXAMPLES ON)						# <AUTO_REPLACED> 
+set_if_not_defined(COMPILE_UNITTESTS ON)					# <AUTO_REPLACED> 
 
 ## USER_SECTION_START 3
 
@@ -82,7 +83,16 @@ set(COMPILE_UNITTESTS ON)						# <AUTO_REPLACED>
 # -------------------- Dependencies ----------------------------------------------
 # --------------------------------------------------------------------------------
 
-set(QT_INSTALL_BASE "C:\\Qt")
+## USER_SECTION_START 8
+
+## USER_SECTION_END
+
+set_if_not_defined(QT_INSTALL_BASE "C:/Qt")
+set_if_not_defined(QT_MAJOR_VERSION 5)
+set_if_not_defined(QT_VERSION "autoFind")
+set_if_not_defined(QT_COMPILER "autoFind")
+
+
 
 ## USER_SECTION_START 7
 
@@ -112,7 +122,6 @@ link_directories(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 
 
 include(cmake/QtLocator.cmake)
-include(cmake/utility.cmake)
 include(cmake/dependencies.cmake)
 include(cmake/ExampleMaster.cmake)
 
@@ -121,11 +130,11 @@ include(cmake/ExampleMaster.cmake)
 ## USER_SECTION_END
 
 add_subdirectory(core)
-if(COMPILE_EXAMPLES AND NOT LIBRARY_NAME_NO_EXAMPLES)
+if(COMPILE_EXAMPLES AND NOT LibraryName_NO_EXAMPLES)
     message("Include examples for ${LIBRARY_NAME}")
     add_subdirectory(examples)
 endif()
-if(COMPILE_UNITTESTS AND NOT LIBRARY_NAME_NO_UNITTESTS)
+if(COMPILE_UNITTESTS AND NOT LibraryName_NO_UNITTESTS)
     message("Include unittests for ${LIBRARY_NAME}")
     add_subdirectory(unitTests)
 endif()
