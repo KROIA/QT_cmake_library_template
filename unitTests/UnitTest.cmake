@@ -17,7 +17,6 @@ set(${LIB_NAME}_NO_UNITTESTS True)						# Disables the unittests of the library
 message("Downloading dependency: ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")
 FetchContent_MakeAvailable(${LIB_NAME})
 
-
 # Add this library to the specific profiles of this project
 list(APPEND DEPENDENCIES_FOR_SHARED_LIB ${LIB_NAME}_static)
 list(APPEND DEPENDENCIES_FOR_STATIC_LIB ${LIB_NAME}_static)

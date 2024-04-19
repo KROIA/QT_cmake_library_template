@@ -1,11 +1,11 @@
-﻿cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.20)
 ## USER_SECTION_START 1
 
 ## USER_SECTION_END
 
 
 ## INFO
-## Template version: 1.0.0
+## Template version: 1.1.0
 ##
 ## This is a template for a CMake project.
 ## It is designed to be used with the Visual Studio
@@ -45,13 +45,13 @@ set(QT_ENABLE ON)	                            # <AUTO_REPLACED>
 set(QT_DEPLOY ON)	                            # <AUTO_REPLACED> 
 
 # Needed QT modules                             # <AUTO_REPLACED> 
-set(QT_MODULES                                  
-    Core
-    Widgets
+set(QT_MODULES
+  Core
+  Widgets
 )
 
 # Library file name settings
-set(DEBUG_POSTFIX_STR  "-d")                    # <AUTO_REPLACED> 
+set(DEBUG_POSTFIX_STR "-d")                    # <AUTO_REPLACED> 
 set(STATIC_POSTFIX_STR "-s")                    # <AUTO_REPLACED> 
 set(PROFILING_POSTFIX_STR "-p")                 # <AUTO_REPLACED>  
 
