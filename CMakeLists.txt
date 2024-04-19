@@ -73,7 +73,7 @@ set(RELATIVE_INSTALL_FOLDER lib)                # Relative path to the install f
 
 
 set_if_not_defined(COMPILE_EXAMPLES ON)						# <AUTO_REPLACED> 
-set_if_not_defined(COMPILE_UNITTESTS OFF)					# <AUTO_REPLACED> 
+set_if_not_defined(COMPILE_UNITTESTS ON)					# <AUTO_REPLACED> 
 
 ## USER_SECTION_START 3
 
