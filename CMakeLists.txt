@@ -73,7 +73,7 @@ set(RELATIVE_INSTALL_FOLDER lib)                # Relative path to the install f
 
 
 set_if_not_defined(COMPILE_EXAMPLES ON)						# <AUTO_REPLACED> 
-set_if_not_defined(COMPILE_UNITTESTS OFF)						# <AUTO_REPLACED> 
+set_if_not_defined(COMPILE_UNITTESTS OFF)					# <AUTO_REPLACED> 
 
 ## USER_SECTION_START 3
 
@@ -83,15 +83,16 @@ set_if_not_defined(COMPILE_UNITTESTS OFF)						# <AUTO_REPLACED>
 # -------------------- Dependencies ----------------------------------------------
 # --------------------------------------------------------------------------------
 
-set_if_not_defined(QT_INSTALL_BASE "C:/Qt")
-set_if_not_defined(QT_MAJOR_VERSION 5)
-#SET(QT_VERSION "autoFind")
-#SET(QT_VERSION "5.15.2")
-set_if_not_defined(QT_VERSION "6.5.1")
+## USER_SECTION_START 8
 
-set_if_not_defined(QT_VERSION "6.5.2")
-#SET(QT_COMPILER "mingw81_64")
-set_if_not_defined(QT_COMPILER "msvc2019_64")
+## USER_SECTION_END
+
+set_if_not_defined(QT_INSTALL_BASE "C:/Qt")
+set_if_not_defined(QT_MAJOR_VERSION 6)
+set_if_not_defined(QT_VERSION "autoFind")
+set_if_not_defined(QT_COMPILER "autoFind")
+
+
 
 ## USER_SECTION_START 7
 

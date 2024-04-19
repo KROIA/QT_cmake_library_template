@@ -8,11 +8,38 @@
 # installation folder.
 #
 
+function(get_newest_msvc_compiler_path out rootPath)
+    FILE(GLOB CompilerPaths "${rootPath}/msvc*")
+    set(NewestYear 0)
+    foreach(CompilerPath ${CompilerPaths})
+        get_filename_component(CompilerVersion ${CompilerPath} NAME) # Extract the version from the path
+    
+        # Extract year from the version string
+        string(REGEX MATCH "[0-9][0-9][0-9][0-9]" YearMatch ${CompilerVersion})
+        if (YearMatch)
+            set(Year ${CMAKE_MATCH_0})
+            if (Year GREATER NewestYear)
+                set(NewestYear ${Year})
+                set(NewestCompilerPath ${CompilerPath})
+            endif()
+        endif()
+    endforeach()
+    set(${out} ${NewestCompilerPath} PARENT_SCOPE)
+endfunction()
 
-if(NOT DEFINED QT_MISSING)
-    SET(QT_MISSING True)
-endif()
+# Function to extract the version number from a path
+function(get_version_number out path)
+    string(REGEX MATCH "[0-9]+\\.[0-9]+\\.[0-9]+" version ${path})
+    set(${out} ${version} PARENT_SCOPE)
+endfunction()
+
+set_if_not_defined(QT_MISSING True)
+
 if(NOT QT_VERSION STREQUAL "autoFind" AND DEFINED QT_VERSION)
+    if(NOT EXISTS ${QT_INSTALL_BASE}/${QT_VERSION})
+        message(FATAL_ERROR "Can't find QT installation. Path: ${QT_INSTALL_BASE}/${QT_VERSION} does not exist")
+    endif()
+
     message("Using predefined Qt Version: ${QT_VERSION}")
     SET(QT_MISSING False)
     # Extract the major version number using a regular expression
@@ -20,7 +47,14 @@ if(NOT QT_VERSION STREQUAL "autoFind" AND DEFINED QT_VERSION)
 
     # Convert the extracted version number to an integer
     math(EXPR QT_MAJOR_VERSION "${QT_MAJOR_VERSION}")
-    SET(QT_PATH "${QT_INSTALL_BASE}/${QT_VERSION}/${QT_COMPILER}")
+
+    if(NOT DEFINED QT_COMPILER OR QT_COMPILER STREQUAL "autoFind")
+        get_newest_msvc_compiler_path(QT_PATH ${QT_INSTALL_BASE}/${QT_VERSION})
+    else()
+        SET(QT_PATH "${QT_INSTALL_BASE}/${QT_VERSION}/${QT_COMPILER}")
+    endif()
+
+    
 endif()
 
 if(NOT DEFINED QT_MAJOR_VERSION)
@@ -32,11 +66,7 @@ SET(QT_WIDGET_PACKAGE_NAME Qt${QT_MAJOR_VERSION}Widgets)
 
 
 
-# Function to extract the version number from a path
-function(get_version_number out path)
-    string(REGEX MATCH "[0-9]+\\.[0-9]+\\.[0-9]+" version ${path})
-    set(${out} ${version} PARENT_SCOPE)
-endfunction()
+
 
 # msvc only; mingw will need different logic
 IF(MSVC AND QT_MISSING)
@@ -53,7 +83,6 @@ IF(MSVC AND QT_MISSING)
     # if(NOT DEFINED QT_VERSION OR QT_VERSION STREQUAL "autoFind") 
 
     # get root path so we can search for 5.3, 5.4, 5.5, etc
-    #FILE(GLOB QT_VERSIONS "${QT_INSTALL_BASE}/5.*")
     FILE(GLOB QT_VERSIONS "${QT_INSTALL_BASE}/${QT_MAJOR_VERSION}.*")
     
     # Create a list of version numbers
@@ -100,26 +129,12 @@ IF(MSVC AND QT_MISSING)
     set(NewestCompilerPath "${QT_VERSION}/${QT_COMPILER}")
 
     if(NOT DEFINED QT_COMPILER OR NOT EXISTS ${NewestCompilerPath} OR QT_COMPILER STREQUAL "autoFind")
-        FILE(GLOB CompilerPaths "${QT_VERSION}/msvc*")
-        set(NewestYear 0)
-        foreach(CompilerPath ${CompilerPaths})
-            get_filename_component(CompilerVersion ${CompilerPath} NAME) # Extract the version from the path
-
-            # Extract year from the version string
-            string(REGEX MATCH "[0-9][0-9][0-9][0-9]" YearMatch ${CompilerVersion})
-            if (YearMatch)
-                set(Year ${CMAKE_MATCH_0})
-                if (Year GREATER NewestYear)
-                    set(NewestYear ${Year})
-                    set(NewestCompilerPath ${CompilerPath})
-                endif()
-            endif()
-        endforeach()
+        get_newest_msvc_compiler_path(NewestCompilerPath, ${QT_VERSION})
     endif()
 
     
 
-    if (EXISTS ${QT_PATH})
+    if (EXISTS ${NewestCompilerPath})
         set(QT_PATH ${NewestCompilerPath})
         SET(QT_MISSING False)
     endif()
@@ -143,7 +158,6 @@ IF(NOT QT_MISSING)
         message(FATAL_ERROR "No QT${QT_MAJOR_VERSION} installation found. \n"
                             "Searching for compiler: ${QT_PATH}")
     endif()
-
 ENDIF()
 
 
