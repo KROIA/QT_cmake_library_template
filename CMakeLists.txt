@@ -27,6 +27,7 @@
 ## --------------------------------------------------------------------------------
 ## -------------------- Project settings ------------------------------------------
 ## --------------------------------------------------------------------------------
+include(cmake/utility.cmake)
 
 # Name of the library
 set(LIBRARY_NAME LibraryName)                   # <AUTO_REPLACED>
@@ -71,8 +72,8 @@ set(RELATIVE_BUILD_FOLDER build)                # Relative path to the build fol
 set(RELATIVE_INSTALL_FOLDER lib)                # Relative path to the install folder
 
 
-set(COMPILE_EXAMPLES ON)						# <AUTO_REPLACED> 
-set(COMPILE_UNITTESTS ON)						# <AUTO_REPLACED> 
+set_if_not_defined(COMPILE_EXAMPLES ON)						# <AUTO_REPLACED> 
+set_if_not_defined(COMPILE_UNITTESTS OFF)						# <AUTO_REPLACED> 
 
 ## USER_SECTION_START 3
 
@@ -82,7 +83,15 @@ set(COMPILE_UNITTESTS ON)						# <AUTO_REPLACED>
 # -------------------- Dependencies ----------------------------------------------
 # --------------------------------------------------------------------------------
 
-set(QT_INSTALL_BASE "C:\\Qt")
+set_if_not_defined(QT_INSTALL_BASE "C:/Qt")
+set_if_not_defined(QT_MAJOR_VERSION 5)
+#SET(QT_VERSION "autoFind")
+#SET(QT_VERSION "5.15.2")
+set_if_not_defined(QT_VERSION "6.5.1")
+
+set_if_not_defined(QT_VERSION "6.5.2")
+#SET(QT_COMPILER "mingw81_64")
+set_if_not_defined(QT_COMPILER "msvc2019_64")
 
 ## USER_SECTION_START 7
 
@@ -112,7 +121,6 @@ link_directories(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 
 
 include(cmake/QtLocator.cmake)
-include(cmake/utility.cmake)
 include(cmake/dependencies.cmake)
 include(cmake/ExampleMaster.cmake)
 

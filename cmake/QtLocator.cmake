@@ -8,7 +8,28 @@
 # installation folder.
 #
 
-SET(QT_MISSING True)
+
+if(NOT DEFINED QT_MISSING)
+    SET(QT_MISSING True)
+endif()
+if(NOT QT_VERSION STREQUAL "autoFind" AND DEFINED QT_VERSION)
+    message("Using predefined Qt Version: ${QT_VERSION}")
+    SET(QT_MISSING False)
+    # Extract the major version number using a regular expression
+    string(REGEX MATCH "([0-9]+)" QT_MAJOR_VERSION ${QT_VERSION})
+
+    # Convert the extracted version number to an integer
+    math(EXPR QT_MAJOR_VERSION "${QT_MAJOR_VERSION}")
+    SET(QT_PATH "${QT_INSTALL_BASE}/${QT_VERSION}/${QT_COMPILER}")
+endif()
+
+if(NOT DEFINED QT_MAJOR_VERSION)
+    SET(QT_MAJOR_VERSION 5) # Default Qt5 version
+endif()
+
+SET(QT_PACKAGE_NAME Qt${QT_MAJOR_VERSION})
+SET(QT_WIDGET_PACKAGE_NAME Qt${QT_MAJOR_VERSION}Widgets)
+
 
 
 # Function to extract the version number from a path
@@ -29,8 +50,11 @@ IF(MSVC AND QT_MISSING)
         LIST(GET QT_BIN 0 QT_INSTALL_BASE)
     endif()
 
+    # if(NOT DEFINED QT_VERSION OR QT_VERSION STREQUAL "autoFind") 
+
     # get root path so we can search for 5.3, 5.4, 5.5, etc
-    FILE(GLOB QT_VERSIONS "${QT_INSTALL_BASE}/5.*")
+    #FILE(GLOB QT_VERSIONS "${QT_INSTALL_BASE}/5.*")
+    FILE(GLOB QT_VERSIONS "${QT_INSTALL_BASE}/${QT_MAJOR_VERSION}.*")
     
     # Create a list of version numbers
 	set(version_numbers )
@@ -69,51 +93,117 @@ IF(MSVC AND QT_MISSING)
     # fix any double slashes which seem to be common
     STRING(REPLACE "//" "/"  QT_VERSION "${QT_VERSION}")
 
-    FILE(GLOB CompilerPaths "${QT_VERSION}/msvc*")
 
 
     # Initialize variables to store the newest compiler version and path
-    set(NewestYear 0)
-    set(NewestCompilerPath "")
+    
+    set(NewestCompilerPath "${QT_VERSION}/${QT_COMPILER}")
 
-    foreach(CompilerPath ${CompilerPaths})
-        get_filename_component(CompilerVersion ${CompilerPath} NAME) # Extract the version from the path
+    if(NOT DEFINED QT_COMPILER OR NOT EXISTS ${NewestCompilerPath} OR QT_COMPILER STREQUAL "autoFind")
+        FILE(GLOB CompilerPaths "${QT_VERSION}/msvc*")
+        set(NewestYear 0)
+        foreach(CompilerPath ${CompilerPaths})
+            get_filename_component(CompilerVersion ${CompilerPath} NAME) # Extract the version from the path
 
-        # Extract year from the version string
-        string(REGEX MATCH "[0-9][0-9][0-9][0-9]" YearMatch ${CompilerVersion})
-        if (YearMatch)
-            set(Year ${CMAKE_MATCH_0})
-            if (Year GREATER NewestYear)
-                set(NewestYear ${Year})
-                set(NewestCompilerPath ${CompilerPath})
+            # Extract year from the version string
+            string(REGEX MATCH "[0-9][0-9][0-9][0-9]" YearMatch ${CompilerVersion})
+            if (YearMatch)
+                set(Year ${CMAKE_MATCH_0})
+                if (Year GREATER NewestYear)
+                    set(NewestYear ${Year})
+                    set(NewestCompilerPath ${CompilerPath})
+                endif()
             endif()
-        endif()
-    endforeach()
-
-
-    message("Newest MSVC Compiler Version: ${NewestCompilerVersion}")
-    message("Path to Newest MSVC Compiler: ${NewestCompilerPath}")
-
-    if (EXISTS ${NewestCompilerPath})
-        #message("Compiler path: ${CompilerPath}")
-        set(QT_PATH ${NewestCompilerPath})
-        SET(QT_MISSING False)
-    else()
-        message("No QT5 installation found")
+        endforeach()
     endif()
 
+    
 
+    if (EXISTS ${QT_PATH})
+        set(QT_PATH ${NewestCompilerPath})
+        SET(QT_MISSING False)
+    endif()
 ENDIF()
 
 # use Qt_DIR approach so you can find Qt after cmake has been invoked
 IF(NOT QT_MISSING)
-    MESSAGE("-- Qt found: ${QT_PATH}")
-	
-    
-    SET(Qt5_DIR "${QT_PATH}/lib/cmake/Qt5")
-    SET(Qt5Widgets_DIR  "${QT_PATH}/lib/cmake/Qt5Widgets")
-    SET(Qt5Test_DIR "${QT_PATH}/lib/cmake/Qt5Test")
-	set(CMAKE_PREFIX_PATH "${QT_PATH}/lib/cmake")
+    if (EXISTS ${QT_PATH})
+        message("Using compiler: ${QT_PATH}")
+	    
+        
+        SET(Qt5_DIR "${QT_PATH}/lib/cmake/Qt${QT_MAJOR_VERSION}")
+        SET(Qt${QT_MAJOR_VERSION}Widgets_DIR  "${QT_PATH}/lib/cmake/Qt${QT_MAJOR_VERSION}Widgets")
+        SET(Qt${QT_MAJOR_VERSION}Test_DIR "${QT_PATH}/lib/cmake/Qt${QT_MAJOR_VERSION}Test")
+        SET(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "${QT_PATH}/lib/cmake")
+        # SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${QT_PATH}/lib/cmake/Qt${QT_MAJOR_VERSION}Config.cmake")
+        #SET(CMAKE_PREFIX_PATH "${QT_PATH}")
+        
+        MESSAGE("Qt${QT_MAJOR_VERSION}Config.cmake path:  ${Qt${QT_MAJOR_VERSION}_DIR}")
+    else()
+        message(FATAL_ERROR "No QT${QT_MAJOR_VERSION} installation found. \n"
+                            "Searching for compiler: ${QT_PATH}")
+    endif()
 
-    MESSAGE("Qt5Config.cmake path:  ${Qt5_DIR}")
 ENDIF()
+
+
+macro(qt_wrap_internal_cpp outFiles)
+    # Get the length of the list
+    list(LENGTH ARGV listLength)
+    if(listLength GREATER  1)
+        # Get all parameters after the first one
+        set(IN_FILES ${ARGV})
+        list(REMOVE_AT IN_FILES 0)
+
+        # Call qt_wrap_cpp with the parsed arguments
+        if(${QT_MAJOR_VERSION} EQUAL 5)
+            qt5_wrap_cpp(${outFiles} ${IN_FILES})
+        elseif(${QT_MAJOR_VERSION} EQUAL 6)
+            qt6_wrap_cpp(${outFiles} ${IN_FILES})
+        endif()
+
+        # Export the output files variable for parent scope
+        set(${outFiles} ${${outFiles}} PARENT_SCOPE)
+    endif()
+endmacro()
+
+
+macro(qt_wrap_internal_ui outFiles)
+    # Get the length of the list
+    list(LENGTH ARGV listLength)
+    if(listLength GREATER  1)
+        # Get all parameters after the first one
+        set(IN_FILES ${ARGV})
+        list(REMOVE_AT IN_FILES 0)
+
+        # Call qt_wrap_cpp with the parsed arguments
+        if(${QT_MAJOR_VERSION} EQUAL 5)
+            qt5_wrap_ui(${outFiles} ${IN_FILES})
+        elseif(${QT_MAJOR_VERSION} EQUAL 6)
+            qt6_wrap_ui(${outFiles} ${IN_FILES})
+        endif()
+
+        # Export the output files variable for parent scope
+        set(${outFiles} ${${outFiles}} PARENT_SCOPE)
+    endif()
+endmacro()
+
+macro(qt_add_internal_resources outFiles)
+    # Get the length of the list
+    list(LENGTH ARGV listLength)
+    if(listLength GREATER  1)
+        # Get all parameters after the first one
+        set(IN_FILES ${ARGV})
+        list(REMOVE_AT IN_FILES 0)
+
+        # Call qt_wrap_cpp with the parsed arguments
+        if(${QT_MAJOR_VERSION} EQUAL 5)
+            qt5_add_resources(${outFiles} ${IN_FILES})
+        elseif(${QT_MAJOR_VERSION} EQUAL 6)
+            qt6_add_resources(${outFiles} ${IN_FILES})
+        endif()
+
+        # Export the output files variable for parent scope
+        set(${outFiles} ${${outFiles}} PARENT_SCOPE)
+    endif()
+endmacro()
