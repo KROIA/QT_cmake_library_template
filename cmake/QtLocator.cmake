@@ -20,11 +20,11 @@ function(get_newest_msvc_compiler_path out rootPath)
             set(Year ${CMAKE_MATCH_0})
             if (Year GREATER NewestYear)
                 set(NewestYear ${Year})
-                set(NewestCompilerPath ${CompilerPath})
+                set(newest ${CompilerPath})
             endif()
         endif()
     endforeach()
-    set(${out} ${NewestCompilerPath} PARENT_SCOPE)
+    set(${out} ${newest} PARENT_SCOPE)
 endfunction()
 
 # Function to extract the version number from a path
@@ -129,7 +129,7 @@ IF(MSVC AND QT_MISSING)
     set(NewestCompilerPath "${QT_VERSION}/${QT_COMPILER}")
 
     if(NOT DEFINED QT_COMPILER OR NOT EXISTS ${NewestCompilerPath} OR QT_COMPILER STREQUAL "autoFind")
-        get_newest_msvc_compiler_path(NewestCompilerPath, ${QT_VERSION})
+        get_newest_msvc_compiler_path(NewestCompilerPath ${QT_VERSION})
     endif()
 
     
