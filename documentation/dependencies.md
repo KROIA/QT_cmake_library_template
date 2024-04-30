@@ -75,7 +75,7 @@ To demonstate how to create the dependency cmake file, I use the [easy_profiler 
    ``` cmake
     # Deploy the Profiler GUI
     if(QT_ENABLE AND QT_DEPLOY)
-        DEPLOY_QT(profiler_gui ${INSTALL_BIN_PATH})
+        windeployqt(profiler_gui ${INSTALL_BIN_PATH})
     endif()
 
     set_target_properties(${LIB_NAME} PROPERTIES CMAKE_RUNTIME_OUTPUT_DIRECTORY ${RUNTIME_OUTPUT_DIRECTORY})
@@ -86,7 +86,7 @@ To demonstate how to create the dependency cmake file, I use the [easy_profiler 
     ```
     - You can use the **QT_ENABLE** and **QT_DEPLOY** parameters, which are defined in the root CMakeLists.txt of your library, to check if QT is enabled and if the deployment is activated.
     In the case of the easy_profiler, which contains a QT application, I wan't to deploy that executable so I can use the easy_profiler gui.
-    To do so, the function **DEPLOY_QT** is called.
+    To do so, the function **windeployqt** is called.
 
     - The output path for the easy_profiler is also changed...
     - A custom target definition to make easy_profiler a static build is also done here.
