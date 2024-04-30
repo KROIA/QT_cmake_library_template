@@ -71,6 +71,7 @@ set_if_not_defined(INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/installation)   # 
 set_if_not_defined(RELATIVE_BUILD_FOLDER build)                       # Relative path to the build folder
 set_if_not_defined(RELATIVE_INSTALL_LIB_FOLDER lib)                   # Relative path to the install folder
 set_if_not_defined(RELATIVE_INSTALL_BIN_FOLDER bin)                   # Relative path to the install binary folder
+set_if_not_defined(RELATIVE_INSTALL_INCLUDE_FOLDER include)           # Relative path to the install include folder
 
 
 set_if_not_defined(COMPILE_EXAMPLES ON)						# <AUTO_REPLACED> 
@@ -113,6 +114,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/${RELATIVE_BUILD_FOLDER}
 
 set(INSTALL_LIB_PATH "${CMAKE_INSTALL_PREFIX}/${RELATIVE_INSTALL_LIB_FOLDER}")
 set(INSTALL_BIN_PATH "${CMAKE_INSTALL_PREFIX}/${RELATIVE_INSTALL_BIN_FOLDER}")
+set(INSTALL_INCLUDE_PATH "${CMAKE_INSTALL_PREFIX}/${RELATIVE_INSTALL_INCLUDE_FOLDER}")
 set(FETCHCONTENT_BASE_DIR "${CMAKE_SOURCE_DIR}/dependencies/cache")
 
 link_directories(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
