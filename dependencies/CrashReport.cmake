@@ -1,6 +1,4 @@
 ## description: Simple library to catch exceptions that causes a crash
-cmake_minimum_required(VERSION 3.1.0)
-include(FetchContent)
 
 function(dep SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB)
     # Define the git repository and tag to download from
@@ -16,10 +14,8 @@ function(dep SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB)
 
     set(${LIB_NAME}_NO_EXAMPLES True)
     set(${LIB_NAME}_NO_UNITTESTS True)
-    set(BUILD_SHARED_LIBS OFF CACHE BOOL "Build JsonDatabase as static library.")
     message("Downloading dependency: ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")
     FetchContent_MakeAvailable(${LIB_NAME})
-
 
     # Add this library to the specific profiles of this project
     list(APPEND DEPS_FOR_SHARED_LIB ${LIB_NAME}_static)

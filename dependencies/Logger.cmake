@@ -1,5 +1,4 @@
 ## description: simple library to create log files and UI based logging systems
-include(FetchContent)
 
 function(dep SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB)
     # Define the git repository and tag to download from
