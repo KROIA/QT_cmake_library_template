@@ -43,6 +43,13 @@ namespace LibraryNamespace
 
 		stream << ss.str();
 	}
+	std::string LibraryInfo::getInfoStr()
+	{
+		LibraryInfo info;
+		std::stringstream ss;
+		info.printInfo(ss);
+		return ss.str();
+	}
 
 #ifdef QT_WIDGETS_AVAILABLE
 	void addRow(const QString& labelText, const QString& valueText, QGridLayout* layout, int row) {

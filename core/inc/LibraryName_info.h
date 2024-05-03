@@ -90,6 +90,7 @@ namespace LibraryNamespace
 
 		static void printInfo();
 		static void printInfo(std::ostream& stream);
+		static std::string getInfoStr();
 
 		// This function is only available when QT_ENABLE was set to ON in the CMakeLists.txt and
 		// QT_MODULES contains the value "Widgets"
