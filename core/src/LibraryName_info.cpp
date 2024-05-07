@@ -45,9 +45,8 @@ namespace LibraryNamespace
 	}
 	std::string LibraryInfo::getInfoStr()
 	{
-		LibraryInfo info;
 		std::stringstream ss;
-		info.printInfo(ss);
+		LibraryInfo::printInfo(ss);
 		return ss.str();
 	}
 
