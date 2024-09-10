@@ -4,7 +4,9 @@
 
 /// USER_SECTION_END
 
-#include "LibraryName_base.h"
+#include "LibraryName_global.h"
+#include "LibraryName_debug.h"
+
 #include <sstream>
 
 #define STRINGIFY(x) #x

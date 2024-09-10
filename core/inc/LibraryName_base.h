@@ -6,6 +6,7 @@
 
 #include "LibraryName_global.h"
 #include "LibraryName_debug.h"
+#include "LibraryName_info.h"
 
 /// USER_SECTION_START 2
 
