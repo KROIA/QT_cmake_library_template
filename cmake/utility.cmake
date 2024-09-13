@@ -41,7 +41,7 @@ function(windeployqt targetName outputPath)
 		--no-opengl-sw 
 		--pdb 
 		--dir \"${outputPath}\" \"${targetExePath}\"
-        --qmldir \"${CMAKE_CURRENT_SOURCE_DIR}\"")
+        --qmldir \"${CMAKE_SOURCE_DIR}\"")
 
 	set(CMD "${DEPLOY_COMMAND}")
 	string(REPLACE "\\" "/" CMD "${CMD}")
