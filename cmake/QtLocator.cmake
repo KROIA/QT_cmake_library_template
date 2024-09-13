@@ -162,6 +162,7 @@ IF(QT_MISSING)
 
     if (EXISTS ${NewestCompilerPath})
         set(QT_PATH ${NewestCompilerPath})
+        list(APPEND CMAKE_PREFIX_PATH ${NewestCompilerPath})
         SET(QT_MISSING False)
     endif()
 ENDIF()
