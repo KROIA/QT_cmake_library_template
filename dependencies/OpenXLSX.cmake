@@ -1,4 +1,5 @@
 ## description: OpenXLSX is a C++ library for reading, writing, creating and modifying Microsoft Excel® files, with the .xlsx format.
+include(FetchContent)
 
 # All credits go to the owner of the OpenXLSX repository
 function(dep SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB)
