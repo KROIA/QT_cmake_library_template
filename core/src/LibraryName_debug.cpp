@@ -55,7 +55,7 @@ namespace LibraryNamespace
 		/// USER_SECTION_END
 	}
 
-#if defined(LOGGER) && not defined(LOGGER_LIB)
+#if defined(LOGGER) and not defined(LOGGER_LIB)
 	/// USER_SECTION_START 10
 
 	/// USER_SECTION_END
