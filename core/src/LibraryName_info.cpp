@@ -1,5 +1,4 @@
 #include "LibraryName_info.h"
-#include "LibraryName_debug.h"
 
 /// USER_SECTION_START 1
 
@@ -151,25 +150,7 @@ namespace LibraryNamespace
 	}
 #endif
 
-	// Implementation of the Profiler start/stop functions
-	void Profiler::start()
-	{
-#ifdef LIBRARY_NAME_SHORT_PROFILING
-		EASY_PROFILER_ENABLE;
-#endif
-	}
-	void Profiler::stop()
-	{
-		stop("profile.prof");
-	}
-	void Profiler::stop(const char* profilerOutputFile)
-	{
-#ifdef LIBRARY_NAME_SHORT_PROFILING
-		profiler::dumpBlocksToFile(profilerOutputFile);
-#else
-		(void)profilerOutputFile;
-#endif
-	}
+
 
 
 /// USER_SECTION_START 4
