@@ -161,6 +161,9 @@ namespace LibraryNamespace
 
 /// USER_SECTION_END
 #endif
+/// USER_SECTION_START 13
+
+/// USER_SECTION_END
 }
 
 
