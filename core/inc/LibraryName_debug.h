@@ -1,6 +1,10 @@
 #pragma once
 #include "LibraryName_global.h"
 
+/// USER_SECTION_START 14
+
+/// USER_SECTION_END
+
 // The Logger library is automaticly included if the logger dependency .cmake file is available
 #if defined(LOGGER) and not defined(LOGGER_LIB)
 	#include "Logger.h"
