@@ -6,7 +6,7 @@
 /// USER_SECTION_END
 
 // The Logger library is automaticly included if the logger dependency .cmake file is available
-#if defined(LOGGER) and not defined(LOGGER_LIB)
+#if defined(LOGGER)
 	#include "Logger.h"
 #endif
 
@@ -111,7 +111,7 @@ namespace LibraryNamespace
 /// USER_SECTION_END
 
 
-#if defined(LOGGER) and not defined(LOGGER_LIB)
+#if defined(LOGGER)
 	class LIBRARY_NAME_EXPORT Logger 
 	{
 		/// USER_SECTION_START 8
