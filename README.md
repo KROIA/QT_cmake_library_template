@@ -3,6 +3,7 @@
 - [Features](#features)
 - [User sections](#user-sections)
 - [Library structure](#library-structure)
+- [How to use a library made from this template](documentation/HowToUseALibrary.md)
 - [References](#references)
 - [Contact](#contact)
 ------------------------------------------------------
