@@ -35,7 +35,7 @@ If your dependency is built using this library template you can continue here.
     ``` cmake
     ## description: This is a example description which is visible as tooltip in the CmakeLibraryCreator
     ```
-4. Change the variables **LIB_NAME**, **GIT_REPO** and **GIT_TAG** 
+4. Change the variables **LIB_NAME**, **LIB_MACRO_NAME**, **GIT_REPO** and **GIT_TAG**<br>
     - **LIB_NAME**: Is the name of the library, you can find the name in the root CMakeLists.txt file:<br>
     ``` cmake
     ...
@@ -43,11 +43,12 @@ If your dependency is built using this library template you can continue here.
     set(LIBRARY_NAME Logger)                   # <AUTO_REPLACED>
     ...
     ```
+    - **LIB_MACRO_NAME**: Macro name that is defined by the compiler to enable conde sections inside the library. For example, enabeling the Logger integration if it available.<br>
     - **GIT_REPO**: Link to the repository of the dependency.
     - **GIT_TAG**: The name of the tag/branch you want to use.
 5. Save the file.
 6. Recommended: Copy the created file to the repositories root folder, so others which want to use your library can download your dependency cmake file.<br>
-   Additional you can contact me so I can add your dependency file to the list of all dependencies available for the use in the [Cmake LibraryC reator](https://github.com/KROIA/CmakeLibCreator).<br>
+   Additional you can contact me so I can add your dependency file to the list of all dependencies available for the use in the [Cmake Library Creator](https://github.com/KROIA/CmakeLibCreator).<br>
    The dependency file will then be saved to the [Dependencies repository](https://github.com/KROIA/QT_cmake_library_template/tree/dependencies).
 
 ## Create a dependency file from special repository
@@ -111,27 +112,39 @@ To demonstate how to create the dependency cmake file, I use the [easy_profiler 
 Here you can see the content of the Logger library dependency cmake file.<br>
 ``` cmake
 ## description: simple library to create log files and UI based logging systems
+include(FetchContent)
 
-# Define the git repository and tag to download from
-set(LIB_NAME Logger)
-set(GIT_REPO https://github.com/KROIA/Logger.git)
-set(GIT_TAG main)
+function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB)
+    # Define the git repository and tag to download from
+    set(LIB_NAME Logger)
+    set(LIB_MACRO_NAME LOGGER)
+    set(GIT_REPO https://github.com/KROIA/Logger.git)
+    set(GIT_TAG main)
 
-FetchContent_Declare(
-    ${LIB_NAME}
-    GIT_REPOSITORY ${GIT_REPO}
-    GIT_TAG        ${GIT_TAG}
-)
+    FetchContent_Declare(
+        ${LIB_NAME}
+        GIT_REPOSITORY ${GIT_REPO}
+        GIT_TAG        ${GIT_TAG}
+    )
 
-set(${LIB_NAME}_NO_EXAMPLES True)
-set(${LIB_NAME}_NO_UNITTESTS True)
-message("Downloading dependency: ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")
-FetchContent_MakeAvailable(${LIB_NAME})
+    set(${LIB_NAME}_NO_EXAMPLES True)
+    set(${LIB_NAME}_NO_UNITTESTS True)
+    message("Downloading dependency: ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")
+    FetchContent_MakeAvailable(${LIB_NAME})
 
-# Add this library to the specific profiles of this project
-list(APPEND DEPENDENCIES_FOR_SHARED_LIB ${LIB_NAME}_static)
-list(APPEND DEPENDENCIES_FOR_STATIC_LIB ${LIB_NAME}_static)
-list(APPEND DEPENDENCIES_FOR_STATIC_PROFILE_LIB ${LIB_NAME}_static_profile) # only use for static profiling profile
+    # Add this library to the specific profiles of this project
+    list(APPEND DEPS_FOR_SHARED_LIB ${LIB_NAME}_shared)
+    list(APPEND DEPS_FOR_STATIC_LIB ${LIB_NAME}_static)
+    list(APPEND DEPS_FOR_STATIC_PROFILE_LIB ${LIB_NAME}_static_profile) # only use for static profiling profile
+
+    set(${LIBRARY_MACRO_NAME} "${${LIBRARY_MACRO_NAME}};${LIB_MACRO_NAME}" PARENT_SCOPE)
+    set(${SHARED_LIB} "${${SHARED_LIB}};${DEPS_FOR_SHARED_LIB}" PARENT_SCOPE)
+    set(${STATIC_LIB} "${${STATIC_LIB}};${DEPS_FOR_STATIC_LIB}" PARENT_SCOPE)
+    set(${STATIC_PROFILE_LIB} "${${STATIC_PROFILE_LIB}};${DEPS_FOR_STATIC_PROFILE_LIB}" PARENT_SCOPE)
+endfunction()
+
+dep(DEPENDENCY_NAME_MACRO DEPENDENCIES_FOR_SHARED_LIB DEPENDENCIES_FOR_STATIC_LIB DEPENDENCIES_FOR_STATIC_PROFILE_LIB)
+
 ``` 
 
 #### Description text

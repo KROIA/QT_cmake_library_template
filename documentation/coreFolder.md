@@ -3,8 +3,9 @@ This folder contains the source code of the library, it is splitted in **inc**, 
 - **inc** This is the folder that contains all header files.
 - **src** This is the folder that contains all cpp source files.
 - **resources** This is the folder that contains resources such as icons, images...
-
-<img src="core_files.png" alt="Overview" width="300"/>
+<div style="text-align: center;">
+	<img src="core_files.png" alt="Overview" width="300"/>
+</div>
 
 ## Files
 ### LibraryName.h
@@ -52,32 +53,20 @@ It includes all headers that shuld be available to all headers from the library.
 
 #include "LibraryName_global.h"
 #include "LibraryName_debug.h"
+#include "LibraryName_info.h"
 
 /// USER_SECTION_START 2
 
 /// USER_SECTION_END
 ``` 
 ### LibraryName_debug.h
-This header is used to debug/profile your library.
-It contains usefull macros to write to the console or to create profiling blocks.
-Visit the [profiling](EasyProfilerIntegration.md) section for more infos about profiling.
-``` C++
-...
-// Debugging
-#ifdef NDEBUG
-    #define LIBRARY_NAME_SHORT_CONSOLE(msg)
-    #define LIBRARY_NAME_SHORT_CONSOLE_FUNCTION(msg)
-#else
-    #include <iostream>
+This header is used to debug/profile your library.<br>
+It contains usefull macros to write to the console or to create profiling blocks.<br>
+Visit the [profiling](EasyProfilerIntegration.md) section for more infos about profiling.<br>
+Visit the [Logging](loggerIntegration.md) section for more infos about the logging integration.<br>
 
-    #define LIBRARY_NAME_SHORT_DEBUG
-    #define LIBRARY_NAME_SHORT_CONSOLE_STREAM std::cout
 
-    #define LIBRARY_NAME_SHORT_CONSOLE(msg) LIBRARY_NAME_SHORT_CONSOLE_STREAM << msg;
-    #define LIBRARY_NAME_SHORT_CONSOLE_FUNCTION(msg) LIBRARY_NAME_SHORT_CONSOLE_STREAM << __PRETTY_FUNCTION__ << " " << msg;
-#endif
-...
-``` 
+
 ### LibraryName_global.h
 This header contains the dllimport/export switch.
 ``` C++
@@ -166,10 +155,30 @@ namespace LibraryNamespace
 		LibraryInfo() = delete;
 		LibraryInfo(const LibraryInfo&) = delete;
 	public:
+	
+		struct Version
+		{
+			int major;
+			int minor;
+			int patch;
+
+			// compare two versions
+			bool operator<(const Version& other) const;
+
+			bool operator==(const Version& other) const;
+			bool operator!=(const Version& other) const;
+			bool operator>(const Version& other) const;
+			bool operator<=(const Version& other) const;
+			bool operator>=(const Version& other) const;
+			std::string toString() const;
+		};
+
 		// Current version of the library
 		static constexpr int versionMajor               = 0;
 		static constexpr int versionMinor               = 0;
 		static constexpr int versionPatch               = 0;
+
+		static constexpr Version version{ versionMajor, versionMinor, versionPatch };
 
 		// Library name
 		static constexpr const char* name               = "LibraryName";
