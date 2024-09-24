@@ -4,7 +4,7 @@ This folder contains the source code of the library, it is splitted in **inc**, 
 - **src** This is the folder that contains all cpp source files.
 - **resources** This is the folder that contains resources such as icons, images...
 <div style="text-align: center;">
-	<img src="core_files.png" alt="Overview" width="300"/>
+	<img src="Images/core_files.png" alt="Overview" width="300"/>
 </div>
 
 ## Files

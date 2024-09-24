@@ -14,7 +14,7 @@ The download will be locaded in the folder:
 ## How to add a dependency to my library project?
 1. Check if your dependency already has a dependency cmake file.
    For my personal libraries, I put that file to the root repository path:<br>
-   <img src="LoggerDependency.png" alt="Logger library" width="200"/><br>
+   <img src="Images/LoggerDependency.png" alt="Logger library" width="200"/><br>
    If no such file is available, [click here](#Create-a-dependency-file)
 
 2. Add the dependency cmake file to the directory:

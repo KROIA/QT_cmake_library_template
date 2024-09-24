@@ -15,7 +15,7 @@ The template is designed to generate both, dynamic and static builds of a librar
 It is recommended to use the [Cmake Lib Creator](https://github.com/KROIA/CmakeLibCreator) to create and manage the library files.
 
 <div style="text-align: center;">
-    <img src="documentation/LibraryHirarchy.png" alt="Overview" width="500"/>
+    <img src="documentation/Images/LibraryHirarchy.png" alt="Overview" width="500"/>
 </div>
 The image shows how this template can be used.
 An application consists of several libraries, which in turn can consist of several libraries.

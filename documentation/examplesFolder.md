@@ -14,7 +14,7 @@ If you need additional dependencies that are not included in the dependency of t
 Inside the ExampleProject folder, create a subdirectory called "dependencies".
 Add the needed dependencyXX.cmake files in that folder.
 <div style="text-align: center;">
-	<img src="examplesDependencies.png" alt="Dependencies for an example project" width="200"/>
+	<img src="Images/examplesDependencies.png" alt="Dependencies for an example project" width="200"/>
 </div>
 
 Inside the CMakeLists.txt include the dependencies:
