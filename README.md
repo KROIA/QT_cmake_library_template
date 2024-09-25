@@ -1,9 +1,11 @@
 ## Table of content
 - [Overview](#overview)
 - [Features](#features)
-- [User sections](#user-sections)
+- [Hot to use](documentation/HowToUse.md)
 - [Library structure](#library-structure)
+- [Configuring the project](documentation/ConfigureTheProject.md)
 - [How to use a library made from this template](documentation/HowToUseALibrary.md)
+- [Common problems](documentation/CommonProblems.md)
 - [References](#references)
 - [Contact](#contact)
 ------------------------------------------------------
@@ -27,10 +29,6 @@ This template makes it as easy as possible to integrate new libraries
 - Builtin integration to use the [easy_profiler](https://github.com/yse/easy_profiler), [see Easy Profiler integration](documentation/EasyProfilerIntegration.md).
 - Example main project that integrates the library
 - Example UnitTest project using a simple [Unit Test Library](https://github.com/KROIA/UnitTest).
-
---------
-## User sections
-Please read [this section](documentation/generalInfoForSourceFiles.md) to learn how the **USER_SECTION_START** and **USER_SECTION_END** works, before you **change any template file**.
 
 --------
 ## Library structure
