@@ -2,10 +2,15 @@
 All the settings described here can be edited using the [Cmake Lib Creator](https://github.com/KROIA/CmakeLibCreator).
 
 ## Overview
-* [Root CMakeLists.txt](#root-cmakeliststxt)
-* [Dependencies](#dependencies)
-* [C++ Headers](#c-headers)
-  * [LibraryName_info.h](#libraryname_infoh)
+- [Configure the project](#configure-the-project)
+  - [Overview](#overview)
+  - [CMake](#cmake)
+    - [Root CMakeLists.txt](#root-cmakeliststxt)
+  - [Dependencies](#dependencies)
+    - [Dependency uses this template](#dependency-uses-this-template)
+    - [Dependency does not use this template](#dependency-does-not-use-this-template)
+  - [C++ Headers](#c-headers)
+    - [LibraryName\_info.h](#libraryname_infoh)
 
 ## CMake
 ### Root CMakeLists.txt
@@ -73,11 +78,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)             # <AUTO_REPLACED>
 #       Do not use them in headers which are visible by the user of the library.
 # Example:
 # list(APPEND USER_SPECIFIC_DEFINES 
-#    "TEST_DEFINE"
+#    TEST_DEFINE
 # )
 # 
-list(APPEND USER_SPECIFIC_DEFINES 
-)
+list(APPEND USER_SPECIFIC_DEFINES)
 ```
 The list USER_SPECIFIC_DEFINES holds custom macro names used for compilating the library.
 >⚠️ These defines are not defined when you use this library as dependency. It is only available during compilation of the library. If you use a macro in a header file of your library for example to generate code, the code will not be generated in the main application that includes your library.

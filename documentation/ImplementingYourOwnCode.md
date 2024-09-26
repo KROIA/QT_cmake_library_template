@@ -3,11 +3,11 @@
 
 
 ## File location
-Library files are located in the "core" directory.
-* Headers are located in "core/inc"
-* sources are located in "core/src"
-* ui files are located in "core/ui" (must be created if needed)
-* resources are located in "core/resources"
+Library files are located in the `core` directory.
+* Headers are located in `core/inc`
+* sources are located in `core/src`
+* ui files are located in `core/ui` (must be created if needed)
+* resources are located in `core/resources`
   
 > ⚠️When you create a new file, CMake asks you to add the file to the source list. <br>
 **Do not accept that** because the template library's CMake files are built so, that they scan the whole folder for source files. 
@@ -16,7 +16,7 @@ Library files are located in the "core" directory.
     <img src="Images/CreateNewFile.png" alt="Overview" width="800"/>
 </div>
 
-You can create a folder tree inside the "core" folder. The CMake files of the template will search recursive all directories in the "core" folder to find all filetypes that are needed to build the library.
+You can create a folder tree inside the `core` folder. The CMake files of the template will search recursive all directories in the `core` folder to find all filetypes that are needed to build the library.
 
 ## Example class implementation
 
