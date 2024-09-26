@@ -1,13 +1,23 @@
 # Hot to use
+## Overview
+* [Setup the enviroment](#setup-the-enviroment)
+  * [Dependencies](#dependencies)
+  * [QT installation](#qt-installation)
+* [Library structure](#library-structure)
+* [Library setup](#library-setup)
+* [Library configuration](ConfigureTheProject.md)
+* [Library modification](ModifyingTheProject.md)
+* [Implementation of your library code](ImplementingYourOwnCode.md)
 
+---
 ## Setup the enviroment
-This library template is designed for QT projects. Therefore QT is required to work without any problems.
+This library template is designed for QT projects. Therefore QT is required.
 ### Dependencies
-* CMake
-* Visual Studio
-  * Cmake plugin (may be integrated already in visual studio)
-  * QT Visual studio tools
-* QT
+* [CMake](https://cmake.org/download/)
+* [Visual Studio](https://visualstudio.microsoft.com/de/downloads/)
+  * [Cmake plugin](https://learn.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=msvc-170) (may be integrated already in visual studio)
+  * [QT Visual studio tools](https://doc.qt.io/qtvstools/qtvstools-how-to-install.html)
+* [QT](https://www.qt.io/download-dev)
   * QT5 or QT6
   * Any msvc compiler
 

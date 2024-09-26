@@ -1,15 +1,17 @@
-## Table of content
-- [Overview](#overview)
-- [Features](#features)
-- [How to use](documentation/HowToUse.md)
-- [How to use a library made from this template](documentation/HowToUseALibrary.md)
-- [Common problems](documentation/CommonProblems.md)
-- [References](#references)
-- [Contact](#contact)
-------------------------------------------------------
+## Overview
+- [QT cmake library template](#qt-cmake-library-template)
+  - [Overview](#overview)
+  - [Features](#features)
+  - [How to use](#how-to-use)
+  - [How to use a library made from this template](#how-to-use-a-library-made-from-this-template)
+  - [Common problems](#common-problems)
+  - [References](#references)
+  - [Contact](#contact)
+  
+---
 # QT cmake library template
 ## Overview
-This is a template project used to create c++ libraries based on CMake.
+This is a template project used to create c++ libraries for Qt Applications based on CMake.
 The goal of this template is, to build a modular and easy to use structure to develop applications and libraries.
 
 The template is designed to generate both, dynamic and static builds of a library.
@@ -22,6 +24,7 @@ The image shows how this template can be used.
 An application consists of several libraries, which in turn can consist of several libraries.
 This template makes it as easy as possible to integrate new libraries.
 
+---
 ## Features
 * Predefined library headers to provide
   * [Profiling capability](documentation/EasyProfilerIntegration.md)
@@ -33,7 +36,7 @@ You can add as many examples as you want.
 * Example UnitTest project using a simple [Unit Test Library](https://github.com/KROIA/UnitTest).
 [click here for more informations](documentation/UnitTestsFolder.md)
 
---------
+---
 ## How to use
 [click here to visit this chapter](documentation/HowToUse.md)
 ## How to use a library made from this template
