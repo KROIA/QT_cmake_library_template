@@ -51,7 +51,7 @@ If your dependency is built using this library template you can continue here.
    Additional you can contact me so I can add your dependency file to the list of all dependencies available for the use in the [Cmake Library Creator](https://github.com/KROIA/CmakeLibCreator).<br>
    The dependency file will then be saved to the [Dependencies repository](https://github.com/KROIA/QT_cmake_library_template/tree/dependencies).
 
-## Create a dependency file from special repository
+## Create a dependency file from special repository {#Create-a-dependency-file-from-special-repository}
 To demonstate how to create the dependency cmake file, I use the [easy_profiler library](https://github.com/yse/easy_profiler) as example.
 1. Create a new cmake text document and give it the name of the dependency.
 2. Copy the content from the [template file](https://raw.githubusercontent.com/KROIA/QT_cmake_library_template/main/dependencies/DependencyTemplate.cmake).
@@ -70,8 +70,11 @@ To demonstate how to create the dependency cmake file, I use the [easy_profiler 
     set(GIT_REPO https://github.com/yse/easy_profiler.git)
     set(GIT_TAG develop)
     ```
+    If your library does not exist on github, remove the part with the FetchContent_Declare. You just need to make your library available in this file, using the LIB_NAME as target name.
+    
 
 5. Depending on your dependency, you may have to define/change some settings from the dependency. 
+I recommend you to test your dependency in a separate CMake project to know which settings to that library have to be done in order to work.
    In the example of the easy_profiler it would be the following changes:<br>
    ``` cmake
     # Deploy the Profiler GUI
@@ -151,7 +154,7 @@ dep(DEPENDENCY_NAME_MACRO DEPENDENCIES_FOR_SHARED_LIB DEPENDENCIES_FOR_STATIC_LI
 ``` cmake
 ## description: simple library to create log files and UI based logging systems
 ```
-![Dependency tooltip](LoggerDependency_tooltip.png)<br>
+![Dependency tooltip](Images/LoggerDependency_tooltip.png)<br>
 The description text will be visible as tooltip in the dependencies window of the [Cmake Library Creator](https://github.com/KROIA/CmakeLibCreator).
 #### Git parameters
 ``` cmake

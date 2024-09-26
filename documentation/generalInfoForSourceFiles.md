@@ -1,5 +1,5 @@
 # General info for template files
-This template is designed to be upgraded using a newer version of the template.
+This template is designed to be upgraded with a newer version of the template.
 Since it is possible that you need specific changes in the cmake/c++ files it is nessesarry that such changes are not overwritten during the upgrade process.
 For this purpose are specific user sections defined in the template files.
 

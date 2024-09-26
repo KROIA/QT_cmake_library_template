@@ -172,7 +172,7 @@ void profilingFunction2()
 }
 ```
 <div style="text-align: center;">
-    <img src="ProfilingExample.png" alt="Overview" width="1000"/>
+    <img src="Images/ProfilingExample.png" alt="Overview" width="1000"/>
 </div>
 
 Normally you use the profiler macro inside your library functions. 

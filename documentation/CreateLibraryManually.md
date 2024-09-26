@@ -6,18 +6,9 @@ In this chapter you will learn:
 * Which things in the code must be changed to fit your library.
 
 ## Preparation
-1) Make shure you have installed the enviroment correctly. 
-Check out [Setup the enviroment](SetupEnviroment.md) 
-2) Define a Library name for your library.
+1) Define a Library name for your library.
 I will use the name **MyLibrary** in this tutorial.
-
-
-## Download
-1) Clone this repository to your local drive.
-2) Change the downloaded folder name to your libraries name.
-
-## Prepare placeholder replacements
-The template contains many placeholders that have to be modified in order to fit your library's name.
+2) The template contains many placeholders that have to be modified in order to fit your library's name.
 
 * **LIBRARY_NAME_SHORT**
 Short form of the library name, used in some macros of the library.
@@ -30,6 +21,10 @@ Short form of the library name, used in some macros of the library.
 | LIBRARY_NAME | MY_LIBRARY     |
 | LibraryNamespace | MyLibrary |
 | LibraryName  | MyLibrary    |
+
+## Download
+1) Clone this repository to your local drive.
+2) Change the downloaded folder name to your libraries name.
 
 ## Necessary file modifications
 * For every file below, find and replace every placeholder with its counterpart.
@@ -59,7 +54,7 @@ Texts are't necesarry whole words
 
 
 
-The file CMakeLists.txt in the root folder needs special replacements:
+The file **CMakeLists.txt** in the root folder needs special replacements:
 ``` cmake
 ... Original
 # Name of the library
@@ -80,3 +75,5 @@ set(LIB_DEFINE MY_LIBRARY_LIB)                # <AUTO_REPLACED>
 set(LIB_PROFILE_DEFINE ML_PROFILING)  # <LIB_PROFILE_DEFINE>  
 ...
 ```
+
+Open the **CMakeSettings.json** and change the **DLIBRARY_NAME_SHORT_PROFILING** defines to fit your placeholder macro name. Note the **D** at the beginning of the name, it is needet because it is the command line parameter **-D** which adds a defined symbol to the compiler.
