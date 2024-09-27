@@ -2,9 +2,9 @@
 - [QT cmake library template](#qt-cmake-library-template)
   - [Overview](#overview)
   - [Features](#features)
-  - [How to use](#how-to-use)
-  - [How to use a library made from this template](#how-to-use-a-library-made-from-this-template)
-  - [Common problems](#common-problems)
+  - [How to use](documentation/HowToUse.md)
+  - [How to use a library made from this template](documentation/HowToUseALibrary.md)
+  - [Common problems](documentation/CommonProblems.md)
   - [References](#references)
   - [Contact](#contact)
   
