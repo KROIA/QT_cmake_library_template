@@ -1,3 +1,4 @@
+# QT cmake library template
 ## Overview
 <img src="documentation/Images/Icons/bookshelf.png" alt="QT_cmake_library_template"  width="100" style="vertical-align:middle;">
 
@@ -11,7 +12,6 @@
   - [Contact](#contact)
   
 ---
-# QT cmake library template
 ## About
 This is a template project used to create c++ libraries for Qt Applications based on CMake.
 The goal of this template is, to build a modular and easy to use structure to develop applications and libraries.
