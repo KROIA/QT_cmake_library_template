@@ -4,11 +4,11 @@ If the library detects, that the [Logger](https://github.com/KROIA/Logger) depen
 ``` C++
 // LibraryName_debug.h
 // The Logger library is automaticly included if the logger dependency .cmake file is available
-#if defined(LOGGER)
+#if LOGGER_LIBRARY_AVAILABLE == 1
     #include "Logger.h"
 #endif
 ```
-The macro `LOGGER` gets defined by the [Logger.cmake](https://github.com/KROIA/Logger/blob/main/Logger.cmake)  dependency file.
+The macro `LOGGER_LIBRARY_AVAILABLE` gets defined by the [Logger.cmake](https://github.com/KROIA/Logger/blob/main/Logger.cmake)  dependency file.
 
 The Logger is availabe using the singelton implementation `LibraryNamespace::Logger`.
 This class contains a `Log::LogObject` instance with the name of the library.

@@ -7,7 +7,6 @@ The download will be locaded in the folder:
 
 
 ## Requirements
-- Your dependency must be a CMake Project
 - Your dependency must be available on github
 - You need a [dependency CMake file](#dependencyCmakeFile) for your dependency
   
@@ -43,7 +42,7 @@ If your dependency is built using this library template you can continue here.
     set(LIBRARY_NAME Logger)                   # <AUTO_REPLACED>
     ...
     ```
-    - **LIB_MACRO_NAME**: Macro name that is defined by the compiler to enable conde sections inside the library. For example, enabeling the Logger integration if it available.<br>
+    - **LIB_MACRO_NAME**: Macro name that is defined by the compiler to enable code sections inside the library. For example, enabeling the Logger integration if it available.<br>
     - **GIT_REPO**: Link to the repository of the dependency.
     - **GIT_TAG**: The name of the tag/branch you want to use.
 5. Save the file.
@@ -120,7 +119,7 @@ include(FetchContent)
 function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB)
     # Define the git repository and tag to download from
     set(LIB_NAME Logger)
-    set(LIB_MACRO_NAME LOGGER)
+    set(LIB_MACRO_NAME LOGGER_LIBRARY_AVAILABLE)
     set(GIT_REPO https://github.com/KROIA/Logger.git)
     set(GIT_TAG main)
 
