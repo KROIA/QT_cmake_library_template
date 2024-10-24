@@ -1,30 +1,26 @@
-## description: SFML Editor widget for QT applications
+## description: EASTL stands for Electronic Arts Standard Template Library. It is an extensive and robust implementation that has an emphasis on high performance. 
 include(FetchContent)
 
 function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB)
-    # Define the git repository and tag to download from
-    set(LIB_NAME QSFML_EditorWidget)
-    set(LIB_MACRO_NAME QSFML_EDITOR_WIDGET_LIBRARY_AVAILABLE)
-    set(GIT_REPO https://github.com/KROIA/QSFML_EditorWidget.git)
-    set(GIT_TAG main)
+    set(LIB_NAME EASTL)
+	set(LIB_MACRO_NAME EASTL_LIBRARY_AVAILABLE)
+    set(GIT_REPO https://github.com/electronicarts/EASTL.git)
+    set(GIT_TAG master)
 
     FetchContent_Declare(
         ${LIB_NAME}
         GIT_REPOSITORY ${GIT_REPO}
         GIT_TAG        ${GIT_TAG}
     )
-
-    set(${LIB_NAME}_NO_EXAMPLES True)
-    set(${LIB_NAME}_NO_UNITTESTS True)
     message("Downloading dependency: ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")
     FetchContent_MakeAvailable(${LIB_NAME})
 
     # Add this library to the specific profiles of this project
-    list(APPEND DEPS_FOR_SHARED_LIB ${LIB_NAME}_shared)
-    list(APPEND DEPS_FOR_STATIC_LIB ${LIB_NAME}_static)
-    list(APPEND DEPS_FOR_STATIC_PROFILE_LIB ${LIB_NAME}_static_profile) # only use for static profiling profile
+    list(APPEND DEPS_FOR_SHARED_LIB ${LIB_NAME})
+    list(APPEND DEPS_FOR_STATIC_LIB ${LIB_NAME})
+    list(APPEND DEPS_FOR_STATIC_PROFILE_LIB ${LIB_NAME}) # only use for static profiling profile
 
-    set(${LIBRARY_MACRO_NAME} "${${LIBRARY_MACRO_NAME}};${LIB_MACRO_NAME}" PARENT_SCOPE)
+	set(${LIBRARY_MACRO_NAME} "${${LIBRARY_MACRO_NAME}};${LIB_MACRO_NAME}" PARENT_SCOPE)
     set(${SHARED_LIB} "${${SHARED_LIB}};${DEPS_FOR_SHARED_LIB}" PARENT_SCOPE)
     set(${STATIC_LIB} "${${STATIC_LIB}};${DEPS_FOR_STATIC_LIB}" PARENT_SCOPE)
     set(${STATIC_PROFILE_LIB} "${${STATIC_PROFILE_LIB}};${DEPS_FOR_STATIC_PROFILE_LIB}" PARENT_SCOPE)
