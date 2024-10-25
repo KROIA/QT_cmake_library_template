@@ -17,7 +17,10 @@ function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB INCLUDE
     set(GIT_REPO_3 https://github.com/epezent/implot.git)
     set(GIT_TAG_3 master)
 
-    
+    # Check if the library has already been populated
+    if(${LIB_NAME_1}_ALREADY_POPULATED AND ${LIB_NAME_2}_ALREADY_POPULATED AND ${LIB_NAME_3}_ALREADY_POPULATED)
+        return()
+    endif()
 
     FetchContent_Declare(
         ${LIB_NAME_1}
@@ -35,17 +38,10 @@ function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB INCLUDE
 		GIT_TAG        ${GIT_TAG_3}
 	)
 
-    # Check if the library has already been populated
-    FetchContent_GetProperties(${LIB_NAME_1})
-    FetchContent_GetProperties(${LIB_NAME_2})
-    FetchContent_GetProperties(${LIB_NAME_3})
-    if(${LIB_NAME_1}_POPULATED AND ${LIB_NAME_2}_POPULATED AND ${LIB_NAME_3}_POPULATED)
-        return()
-    endif()
-
-
     message("Downloading dependency: ${LIB_NAME_1} from: ${GIT_REPO_1} tag: ${GIT_TAG_1}")
     FetchContent_MakeAvailable(${LIB_NAME_1})
+    # Set a persistent cache variable to mark the library as populated
+    set(${LIB_NAME_1}_ALREADY_POPULATED TRUE CACHE INTERNAL "Mark ${LIB_NAME_1} as populated")
 
     set(IMGUI_DIR ${imgui_SOURCE_DIR})
     set(IMGUI_SFML_FIND_SFML OFF)
@@ -55,9 +51,13 @@ function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB INCLUDE
     
     message("Downloading dependency: ${LIB_NAME_2} from: ${GIT_REPO_2} tag: ${GIT_TAG_2}")
     FetchContent_MakeAvailable(${LIB_NAME_2})
+    # Set a persistent cache variable to mark the library as populated
+    set(${LIB_NAME_2}_ALREADY_POPULATED TRUE CACHE INTERNAL "Mark ${LIB_NAME_2} as populated")
 
     message("Downloading dependency: ${LIB_NAME_3} from: ${GIT_REPO_3} tag: ${GIT_TAG_3}")
     FetchContent_MakeAvailable(${LIB_NAME_3})
+    # Set a persistent cache variable to mark the library as populated
+    set(${LIB_NAME_3}_ALREADY_POPULATED TRUE CACHE INTERNAL "Mark ${LIB_NAME_3} as populated")
 
     set(IMPLOT_DIR ${implot_SOURCE_DIR})
     # Add ImPlot to the project

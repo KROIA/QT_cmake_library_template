@@ -8,6 +8,11 @@ function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB)
     set(GIT_REPO https://github.com/KROIA/CommandLineParser.git)
     set(GIT_TAG main)
 
+    # Check if the library has already been populated
+    if(${LIB_NAME}_ALREADY_POPULATED)
+        return()
+    endif()
+
     FetchContent_Declare(
         ${LIB_NAME}
         GIT_REPOSITORY ${GIT_REPO}
@@ -16,9 +21,8 @@ function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB)
 
     # Check if the library has already been populated
     FetchContent_GetProperties(${LIB_NAME})
-    if(${LIB_NAME}_POPULATED)
-        return()
-    endif()
+    # Set a persistent cache variable to mark the library as populated
+    set(${LIB_NAME}_ALREADY_POPULATED TRUE CACHE INTERNAL "Mark ${LIB_NAME} as populated")
 
     set(${LIB_NAME}_NO_EXAMPLES True)
     set(${LIB_NAME}_NO_UNITTESTS True)

@@ -8,17 +8,16 @@ function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB)
     set(GIT_REPO https://github.com/yse/easy_profiler.git)
     set(GIT_TAG v2.1.0)
 
+    # Check if the library has already been populated
+    if(${LIB_NAME}_ALREADY_POPULATED)
+        return()
+    endif()
+
     FetchContent_Declare(
         ${LIB_NAME}
         GIT_REPOSITORY ${GIT_REPO}
         GIT_TAG        ${GIT_TAG}
     )
-
-    # Check if the library has already been populated
-    FetchContent_GetProperties(${LIB_NAME})
-    if(${LIB_NAME}_POPULATED)
-        return()
-    endif()
 
     set(EASY_PROFILER_NO_SAMPLES True)
     set(BUILD_SHARED_LIBS OFF CACHE BOOL "Build easy_profiler as static library.")
@@ -34,6 +33,9 @@ function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB)
     endif()
 
     FetchContent_MakeAvailable(${LIB_NAME})
+    # Set a persistent cache variable to mark the library as populated
+    set(${LIB_NAME}_ALREADY_POPULATED TRUE CACHE INTERNAL "Mark ${LIB_NAME} as populated")
+
     set(EASY_PROFILER_IS_AVAILABLE ON PARENT_SCOPE)
 
 

@@ -6,7 +6,12 @@ function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB)
     set(LIB_NAME TaskGraph)								
     set(LIB_MACRO_NAME TASK_GRAPH_LIBRARY_AVAILABLE)						
     set(GIT_REPO https://github.com/KROIA/TaskGraph.git)
-    set(GIT_TAG main)									
+    set(GIT_TAG main)		
+    
+    # Check if the library has already been populated
+    if(${LIB_NAME}_ALREADY_POPULATED)
+        return()
+    endif()
 
     FetchContent_Declare(
         ${LIB_NAME}
@@ -14,16 +19,12 @@ function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB)
         GIT_TAG        ${GIT_TAG}
     )
 
-    # Check if the library has already been populated
-    FetchContent_GetProperties(${LIB_NAME})
-    if(${LIB_NAME}_POPULATED)
-        return()
-    endif()
-
     set(${LIB_NAME}_NO_EXAMPLES True)						# Disables the examlpes of the library
     set(${LIB_NAME}_NO_UNITTTESTS True)						# Disables the unittests of the library
     message("Downloading dependency: ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")
     FetchContent_MakeAvailable(${LIB_NAME})
+    # Set a persistent cache variable to mark the library as populated
+    set(${LIB_NAME}_ALREADY_POPULATED TRUE CACHE INTERNAL "Mark ${LIB_NAME} as populated")
 
 
     # Add this library to the specific profiles of this project

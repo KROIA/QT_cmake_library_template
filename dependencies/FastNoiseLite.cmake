@@ -8,20 +8,21 @@ function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB INCLUDE
     set(GIT_REPO https://github.com/Auburn/FastNoiseLite.git)
     set(GIT_TAG master)
 
+    # Check if the library has already been populated
+    if(${LIB_NAME}_ALREADY_POPULATED)
+        return()
+    endif()
+
     FetchContent_Declare(
         ${LIB_NAME}
         GIT_REPOSITORY ${GIT_REPO}
         GIT_TAG        ${GIT_TAG}
     )
 
-    # Check if the library has already been populated
-    FetchContent_GetProperties(${LIB_NAME})
-    if(${LIB_NAME}_POPULATED)
-        return()
-    endif()
-
     message("Downloading dependency: ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")
     FetchContent_MakeAvailable(${LIB_NAME})
+    # Set a persistent cache variable to mark the library as populated
+    set(${LIB_NAME}_ALREADY_POPULATED TRUE CACHE INTERNAL "Mark ${LIB_NAME} as populated")
 
     # Add this library to the specific profiles of this project
     #list(APPEND DEPS_FOR_SHARED_LIB ${LIB_NAME})
