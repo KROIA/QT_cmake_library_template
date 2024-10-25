@@ -35,6 +35,14 @@ function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB INCLUDE
 		GIT_TAG        ${GIT_TAG_3}
 	)
 
+    # Check if the library has already been populated
+    FetchContent_GetProperties(${LIB_NAME_1})
+    FetchContent_GetProperties(${LIB_NAME_2})
+    FetchContent_GetProperties(${LIB_NAME_3})
+    if(${LIB_NAME_1}_POPULATED AND ${LIB_NAME_2}_POPULATED AND ${LIB_NAME_3}_POPULATED)
+        return()
+    endif()
+
 
     message("Downloading dependency: ${LIB_NAME_1} from: ${GIT_REPO_1} tag: ${GIT_TAG_1}")
     FetchContent_MakeAvailable(${LIB_NAME_1})

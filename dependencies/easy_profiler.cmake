@@ -14,6 +14,12 @@ function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB)
         GIT_TAG        ${GIT_TAG}
     )
 
+    # Check if the library has already been populated
+    FetchContent_GetProperties(${LIB_NAME})
+    if(${LIB_NAME}_POPULATED)
+        return()
+    endif()
+
     set(EASY_PROFILER_NO_SAMPLES True)
     set(BUILD_SHARED_LIBS OFF CACHE BOOL "Build easy_profiler as static library.")
     message("Downloading dependency: ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")

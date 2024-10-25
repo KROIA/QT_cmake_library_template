@@ -13,6 +13,13 @@ function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB)
         GIT_REPOSITORY ${GIT_REPO}
         GIT_TAG        ${GIT_TAG}
     )
+
+    # Check if the library has already been populated
+    FetchContent_GetProperties(${LIB_NAME})
+    if(${LIB_NAME}_POPULATED)
+        return()
+    endif()
+
     # Specific SFML settings
     # SFML Static Lib
     set(SFML_MISC_INSTALL_PREFIX "${INSTALL_LIB_PATH}/build/misc") 

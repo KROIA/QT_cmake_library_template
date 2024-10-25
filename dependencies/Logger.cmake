@@ -1,10 +1,10 @@
-## description: simple library to create log files and UI based logging systems
+## description: Simple library to create log files and UI based logging systems
 include(FetchContent)
 
 function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB)
     # Define the git repository and tag to download from
     set(LIB_NAME Logger)
-	set(LIB_MACRO_NAME LOGGER_LIBRARY_AVAILABLE)
+    set(LIB_MACRO_NAME LOGGER_LIBRARY_AVAILABLE)
     set(GIT_REPO https://github.com/KROIA/Logger.git)
     set(GIT_TAG main)
 
@@ -13,6 +13,12 @@ function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB)
         GIT_REPOSITORY ${GIT_REPO}
         GIT_TAG        ${GIT_TAG}
     )
+
+    # Check if the library has already been populated
+    FetchContent_GetProperties(${LIB_NAME})
+    if(${LIB_NAME}_POPULATED)
+        return()
+    endif()
 
     set(${LIB_NAME}_NO_EXAMPLES True)
     set(${LIB_NAME}_NO_UNITTESTS True)

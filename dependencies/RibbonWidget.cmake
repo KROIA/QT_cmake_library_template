@@ -1,4 +1,4 @@
-## description: simple ribbon widget for QT applications
+## description: Simple ribbon widget for QT applications
 include(FetchContent)
 
 function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB)
@@ -13,6 +13,12 @@ function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB)
         GIT_REPOSITORY ${GIT_REPO}
         GIT_TAG        ${GIT_TAG}
     )
+
+    # Check if the library has already been populated
+    FetchContent_GetProperties(${LIB_NAME})
+    if(${LIB_NAME}_POPULATED)
+        return()
+    endif()
 
     set(${LIB_NAME}_NO_EXAMPLES True)
     set(${LIB_NAME}_NO_UNITTESTS True)
