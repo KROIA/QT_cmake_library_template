@@ -8,11 +8,6 @@ function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB)
     set(GIT_REPO https://github.com/SFML/SFML.git)
     set(GIT_TAG 2.6.1)
 
-    # Check if the library has already been populated
-    if(${LIB_NAME}_ALREADY_POPULATED)
-        return()
-    endif()
-
     FetchContent_Declare(
         ${LIB_NAME}
         GIT_REPOSITORY ${GIT_REPO}
@@ -28,10 +23,18 @@ function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB)
 
 
     set(BUILD_SHARED_LIBS OFF CACHE BOOL "Build SFML as static library.")
-    message("Downloading dependency: ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")
-    FetchContent_MakeAvailable(${LIB_NAME})
-    # Set a persistent cache variable to mark the library as populated
-    set(${LIB_NAME}_ALREADY_POPULATED TRUE CACHE INTERNAL "Mark ${LIB_NAME} as populated")
+
+    # Check if the library has already been populated
+    FetchContent_GetProperties(${LIB_NAME})
+    if(NOT ${LIB_NAME}_ALREADY_POPULATED)
+        message("Downloading dependency: ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")
+        FetchContent_MakeAvailable(${LIB_NAME})
+        # Set a persistent cache variable to mark the library as populated
+        set(${LIB_NAME}_ALREADY_POPULATED TRUE CACHE INTERNAL "Mark ${LIB_NAME} as populated")
+    else()
+        # Re-run MyLibrary's CMakeLists.txt to set up include dirs, libraries, etc.
+        add_subdirectory("${${LIB_NAME}_SOURCE_DIR}" "${${LIB_NAME}_BINARY_DIR}" EXCLUDE_FROM_ALL)
+    endif()
 
     target_compile_definitions(sfml-graphics	PRIVATE		SFML_STATIC)
     target_compile_definitions(sfml-audio		PRIVATE		SFML_STATIC)
