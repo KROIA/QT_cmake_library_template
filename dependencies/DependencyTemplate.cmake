@@ -14,11 +14,19 @@ function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB INCLUDE
         GIT_TAG        ${GIT_TAG}
     )
 
+
+    # Check if the library has already been populated
+    FetchContent_GetProperties(${LIB_NAME})
+    if(${LIB_NAME}_POPULATED)
+        return()
+    endif()
+
     set(${LIB_NAME}_NO_EXAMPLES True)						# Disables the examlpes of the library
     set(${LIB_NAME}_NO_UNITTTESTS True)						# Disables the unittests of the library
     message("Downloading dependency: ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")
-    FetchContent_MakeAvailable(${LIB_NAME})
 
+    # Only call FetchContent_MakeAvailable if it hasn't been called yet
+    FetchContent_MakeAvailable(${LIB_NAME})
 
     # Add this library to the specific profiles of this project
     list(APPEND DEPS_FOR_SHARED_LIB ${LIB_NAME}_shared)
@@ -37,7 +45,7 @@ function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB INCLUDE
     set(${INCLUDE_PATHS} "${${INCLUDE_PATHS}};${INCLUDES}" PARENT_SCOPE)
 endfunction()
 
-dep(DEPENDENCY_NAME_MACRO 
+dep(DEPENDENCY_NAME_MACRO
     DEPENDENCIES_FOR_SHARED_LIB 
     DEPENDENCIES_FOR_STATIC_LIB 
     DEPENDENCIES_FOR_STATIC_PROFILE_LIB 
