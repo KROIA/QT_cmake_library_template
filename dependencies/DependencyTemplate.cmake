@@ -1,4 +1,4 @@
-## description: simple library to store application settings
+## description: This description will be used as tooltip
 include(FetchContent)
 
 function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB INCLUDE_PATHS)
@@ -23,9 +23,8 @@ function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB INCLUDE
 
     set(${LIB_NAME}_NO_EXAMPLES True)						# Disables the examlpes of the library
     set(${LIB_NAME}_NO_UNITTTESTS True)						# Disables the unittests of the library
-    message("Downloading dependency: ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")
 
-    # Only call FetchContent_MakeAvailable if it hasn't been called yet
+    message("Downloading dependency: ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")
     FetchContent_MakeAvailable(${LIB_NAME})
 
     # Add this library to the specific profiles of this project

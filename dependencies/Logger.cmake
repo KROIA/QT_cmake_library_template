@@ -22,6 +22,7 @@ function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB)
 
     set(${LIB_NAME}_NO_EXAMPLES True)
     set(${LIB_NAME}_NO_UNITTESTS True)
+
     message("Downloading dependency: ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")
     FetchContent_MakeAvailable(${LIB_NAME})
 
