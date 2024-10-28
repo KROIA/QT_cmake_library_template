@@ -14,19 +14,20 @@ function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB INCLUDE
         GIT_TAG        ${GIT_TAG}
     )
 
-
-    # Check if the library has already been populated
-    FetchContent_GetProperties(${LIB_NAME})
-    if(${LIB_NAME}_POPULATED)
-        return()
-    endif()
-
     set(${LIB_NAME}_NO_EXAMPLES True)						# Disables the examlpes of the library
     set(${LIB_NAME}_NO_UNITTTESTS True)						# Disables the unittests of the library
-    message("Downloading dependency: ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")
-
-    # Only call FetchContent_MakeAvailable if it hasn't been called yet
-    FetchContent_MakeAvailable(${LIB_NAME})
+    
+    # Check if the library has already been populated
+    FetchContent_GetProperties(${LIB_NAME})
+    if(NOT ${LIB_NAME}_ALREADY_POPULATED OR NOT ${LIB_NAME}_SOURCE_DIR OR NOT ${LIB_NAME}_BINARY_DIR)
+        message("Downloading dependency: ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")
+        FetchContent_MakeAvailable(${LIB_NAME})
+        # Set a persistent cache variable to mark the library as populated
+        set(${LIB_NAME}_ALREADY_POPULATED TRUE CACHE INTERNAL "Mark ${LIB_NAME} as populated")
+    else()
+        # Re-run MyLibrary's CMakeLists.txt to set up include dirs, libraries, etc.
+        add_subdirectory("${${LIB_NAME}_SOURCE_DIR}" "${${LIB_NAME}_BINARY_DIR}" EXCLUDE_FROM_ALL)
+    endif()
 
     # Add this library to the specific profiles of this project
     list(APPEND DEPS_FOR_SHARED_LIB ${LIB_NAME}_shared)
