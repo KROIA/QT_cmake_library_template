@@ -1,4 +1,4 @@
-## description: simple library to store application settings
+## description: This description will be used as tooltip
 include(FetchContent)
 
 function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB INCLUDE_PATHS)
@@ -28,6 +28,12 @@ function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB INCLUDE
         # Re-run MyLibrary's CMakeLists.txt to set up include dirs, libraries, etc.
         add_subdirectory("${${LIB_NAME}_SOURCE_DIR}" "${${LIB_NAME}_BINARY_DIR}" EXCLUDE_FROM_ALL)
     endif()
+
+    set(${LIB_NAME}_NO_EXAMPLES True)						# Disables the examlpes of the library
+    set(${LIB_NAME}_NO_UNITTTESTS True)						# Disables the unittests of the library
+
+    message("Downloading dependency: ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")
+    FetchContent_MakeAvailable(${LIB_NAME})
 
     # Add this library to the specific profiles of this project
     list(APPEND DEPS_FOR_SHARED_LIB ${LIB_NAME}_shared)

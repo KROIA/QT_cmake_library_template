@@ -22,7 +22,7 @@ function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB)
 
     set(EASY_PROFILER_NO_SAMPLES True)
     set(BUILD_SHARED_LIBS OFF CACHE BOOL "Build easy_profiler as static library.")
-    message("Downloading dependency: ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")
+    
 
 
     # Change the QT version to V5 because easy_profiler is not compatible with QT6
@@ -34,7 +34,7 @@ function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB)
     endif()
 
 
-
+    message("Downloading dependency: ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")
     FetchContent_MakeAvailable(${LIB_NAME})
     set(EASY_PROFILER_IS_AVAILABLE ON PARENT_SCOPE)
 
