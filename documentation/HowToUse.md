@@ -45,11 +45,11 @@ The folderstructure of a library using this template looks like this:<br>
 ```
 - **cmake folder**
 This folder contains cmake files that are used by the library template, do not change them.
-- **[core folder](documentation/CoreFolder.md)**
+- **[core folder](CoreFolder.md)**
 The core folder contains the source code of the library.
-- **[examples folder](documentation/ExamplesFolder.md)**
+- **[examples folder](ExamplesFolder.md)**
 Example projects automaticly receive the dependency of the library and can be used to create examples of how to use the library.
-- **[unitTests folder](documentation/UnitTestsFolder.md)**
+- **[unitTests folder](UnitTestsFolder.md)**
 Unittests can be used to automaticly test your library.
 
 A **build** folder gets created automaticly. It contains the compiled binaries and library files.
