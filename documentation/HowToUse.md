@@ -20,6 +20,7 @@ This library template is designed for QT projects. Therefore QT is required.
 * [QT](https://www.qt.io/download-dev)
   * QT5 or QT6
   * Any msvc compiler
+* [Git](https://git-scm.com/)
 
 
 ### QT installation
