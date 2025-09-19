@@ -11,13 +11,13 @@
 #ifndef BUILD_STATIC
 	//#pragma message("LIBRARY_NAME_LIB is a shared library")
 	#if defined(LIBRARY_NAME_LIB)
-		#define LIBRARY_NAME_EXPORT __declspec(dllexport)
+		#define LIBRARY_NAME_API __declspec(dllexport)
 	#else
-		#define LIBRARY_NAME_EXPORT __declspec(dllimport)
+		#define LIBRARY_NAME_API __declspec(dllimport)
 	#endif
 #else 
 	//#pragma message("LIBRARY_NAME_LIB is a static library")
-	#define LIBRARY_NAME_EXPORT
+	#define LIBRARY_NAME_API
 #endif
 
 /// USER_SECTION_START 2

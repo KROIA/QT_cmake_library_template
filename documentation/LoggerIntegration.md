@@ -83,7 +83,7 @@ A list of all available console types is shown in the code above.
 
 namespace LibraryNamespace
 {
-    class LIBRARY_NAME_EXPORT MyClass
+    class LIBRARY_NAME_API MyClass
     {
         public:
             MyClass();

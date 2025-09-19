@@ -119,7 +119,7 @@ I can't cover that here.
 ### LibraryName_info.h
 
 ``` C++
-class LIBRARY_NAME_EXPORT LibraryInfo
+class LIBRARY_NAME_API LibraryInfo
 {
 ...
 public:

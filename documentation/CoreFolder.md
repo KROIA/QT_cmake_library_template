@@ -74,13 +74,13 @@ This header contains the dllimport/export switch.
 #ifndef BUILD_STATIC
     #pragma message("LIBRARY_NAME_LIB is a shared library")
     #if defined(LIBRARY_NAME_LIB)
-        #define LIBRARY_NAME_EXPORT __declspec(dllexport)
+        #define LIBRARY_NAME_API __declspec(dllexport)
     #else
-        #define LIBRARY_NAME_EXPORT __declspec(dllimport)
+        #define LIBRARY_NAME_API __declspec(dllimport)
     #endif
 #else 
     #pragma message("LIBRARY_NAME_LIB is a static library")
-    #define LIBRARY_NAME_EXPORT
+    #define LIBRARY_NAME_API
 #endif
 ...
 ``` 
@@ -150,7 +150,7 @@ namespace LibraryNamespace
 
 /// USER_SECTION_END
 
-	class LIBRARY_NAME_EXPORT LibraryInfo
+	class LIBRARY_NAME_API LibraryInfo
 	{
 		LibraryInfo() = delete;
 		LibraryInfo(const LibraryInfo&) = delete;

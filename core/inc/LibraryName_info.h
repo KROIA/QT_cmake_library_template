@@ -29,7 +29,7 @@ namespace LibraryNamespace
 
 /// USER_SECTION_END
 
-	class LIBRARY_NAME_EXPORT LibraryInfo
+	class LIBRARY_NAME_API LibraryInfo
 	{
 		LibraryInfo() = delete;
 		LibraryInfo(const LibraryInfo&) = delete;

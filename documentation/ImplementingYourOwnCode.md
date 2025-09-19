@@ -27,7 +27,7 @@ You can create a folder tree inside the `core` folder. The CMake files of the te
 
 namespace LibraryNamespace
 {
-    class LIBRARY_NAME_EXPORT MyClass
+    class LIBRARY_NAME_API MyClass
     {
         public:
             MyClass();
@@ -39,7 +39,7 @@ namespace LibraryNamespace
 ```
 * All your library headers shuld include the `#include "LibraryName_base.h"`
 * All your library specific code is contained within a library namespace. This helps to encapsulate the project from other projects.
-* To be able to create a dll, you need to add the `LIBRARY_NAME_EXPORT` macro in front of the class name.
+* To be able to create a dll, you need to add the `LIBRARY_NAME_API` macro in front of the class name.
 
 ``` C++
 // MyClass.cpp

@@ -89,7 +89,7 @@ namespace LibraryNamespace
 /// USER_SECTION_START 4
 
 /// USER_SECTION_END
-	class LIBRARY_NAME_EXPORT Profiler
+	class LIBRARY_NAME_API Profiler
 	{
 	public:
 		/// USER_SECTION_START 5
@@ -112,7 +112,7 @@ namespace LibraryNamespace
 
 
 #if LOGGER_LIBRARY_AVAILABLE == 1
-	class LIBRARY_NAME_EXPORT Logger 
+	class LIBRARY_NAME_API Logger 
 	{
 		/// USER_SECTION_START 8
 
