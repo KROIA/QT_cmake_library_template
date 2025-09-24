@@ -1,10 +1,10 @@
-## description: Simple ribbon widget for QT applications
+## description: Basic Domain Driven Design pattern implementation in C++
 
 function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB)
     # Define the git repository and tag to download from
-    set(LIB_NAME RibbonWidget)
-    set(LIB_MACRO_NAME RIBBON_WIDGET_LIBRARY_AVAILABLE)
-    set(GIT_REPO https://github.com/KROIA/RibbonWidget.git)
+    set(LIB_NAME DDD)
+    set(LIB_MACRO_NAME DDD_LIBRARY_AVAILABLE)
+    set(GIT_REPO https://github.com/KROIA/DomainDrivenDesign.git)
     set(GIT_TAG main)
 	set(NO_EXAMPLES True)	
 	set(NO_UNITTESTS True)
