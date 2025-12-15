@@ -25,7 +25,7 @@ No QT installation was found.<br>
 
 * Check if QT is installed
 * Check the path of the QT installation
- by default, the installation path shuld be **C:\Qt**.
+ by default, the installation path should be **C:\Qt**.
  If Qt is installed in an other path, open the root CMakeLists.txt file and change the setting:
 
  ``` cmake

@@ -43,7 +43,7 @@ Edited during development of the library:
 
 ### LibraryName_base.h
 This header is the base include in every header from the library.
-It includes all headers that shuld be available to all headers from the library.
+It includes all headers that should be available to all headers from the library.
 ``` C++
 #pragma once
 
@@ -96,8 +96,8 @@ To help a little to find some programming errors, some warnings are changed to e
 ``` C++
 ...
 #if defined(LIBRARY_NAME_LIB)
-	#pragma warning (error : 4715) // not all control paths return a value shuld be an error instead of a warning
-	#pragma warning (error : 4700) // uninitialized local variable used shuld be an error instead of a warning
+	#pragma warning (error : 4715) // not all control paths return a value should be an error instead of a warning
+	#pragma warning (error : 4700) // uninitialized local variable used should be an error instead of a warning
 	#pragma warning (error : 4244) // Implicit conversions between data types 
 	#pragma warning (error : 4100) // Unused variables
 	#pragma warning (error : 4018) // Type mismatch 
@@ -119,8 +119,8 @@ Using the user sections, you can comment the whole section out.
 /// USER_SECTION_END
 
 #if defined(LIBRARY_NAME_LIB)
-	#pragma warning (error : 4715) // not all control paths return a value shuld be an error instead of a warning
-	#pragma warning (error : 4700) // uninitialized local variable used shuld be an error instead of a warning
+	#pragma warning (error : 4715) // not all control paths return a value should be an error instead of a warning
+	#pragma warning (error : 4700) // uninitialized local variable used should be an error instead of a warning
 	#pragma warning (error : 4244) // Implicit conversions between data types 
 	#pragma warning (error : 4100) // Unused variables
 	#pragma warning (error : 4018) // Type mismatch 

@@ -51,8 +51,8 @@
 /// USER_SECTION_END
 
 #if defined(LIBRARY_NAME_LIB)
-	#pragma warning (error : 4715) // not all control paths return a value shuld be an error instead of a warning
-	#pragma warning (error : 4700) // uninitialized local variable used shuld be an error instead of a warning
+    #pragma warning (error : 4715) // not all control paths return a value should be an error instead of a warning
+    #pragma warning (error : 4700) // uninitialized local variable used should be an error instead of a warning
 	#pragma warning (error : 4244) // Implicit conversions between data types 
 	#pragma warning (error : 4100) // Unused variables
 	#pragma warning (error : 4018) // Type mismatch 

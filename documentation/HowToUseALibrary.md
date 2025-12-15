@@ -1,7 +1,7 @@
 # How to use a library, made from this template
 
 ## Usage in an other library based on the tamplate
-Each library that was created using this template, shuld contain a LibraryName.cmake file in the main folder of the repository. This cmake file is used, when the library is added as a dependency.<br>
+Each library that was created using this template, should contain a LibraryName.cmake file in the main folder of the repository. This cmake file is used, when the library is added as a dependency.<br>
 Simply copy that cmake file to your projects dependency folder and reconfigure cmake in visual studio.
 
 ## Standalone build

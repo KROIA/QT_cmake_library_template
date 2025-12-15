@@ -37,7 +37,7 @@ namespace LibraryNamespace
     };
 }
 ```
-* All your library headers shuld include the `#include "LibraryName_base.h"`
+* All your library headers should include the `#include "LibraryName_base.h"`
 * All your library specific code is contained within a library namespace. This helps to encapsulate the project from other projects.
 * To be able to create a dll, you need to add the `LIBRARY_NAME_API` macro in front of the class name.
 
