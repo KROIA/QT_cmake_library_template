@@ -60,8 +60,6 @@
 	#pragma warning (error : 4456) // declaration of 'x' hides previous local declaration
 	#pragma warning (error : 4065) // switch statement contains 'default' but no 'case' labels
 	#pragma warning (error : 4189) // Unused return value
-	#pragma warning (error : 4996) // unsafe function calls
-	#pragma warning (error : 4018) // signed/unsigned mismatch
 	#pragma warning (error : 4172) // Returning address of local temporary object
 #endif
 
