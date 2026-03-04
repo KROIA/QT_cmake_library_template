@@ -9,8 +9,10 @@ function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB INCLUDE
 	set(NO_EXAMPLES True)	
 	set(NO_UNITTESTS True)
 	set(ADDITIONAL_INCLUDE_PATHS )
-	
+
+    set(SHARED_LIB_BAK "${${SHARED_LIB}}")
     downloadStandardLibrary()
+    set(${SHARED_LIB} "${SHARED_LIB_BAK};${LIB_NAME}_static" PARENT_SCOPE)
 endfunction()
 
 dep(DEPENDENCY_NAME_MACRO 
