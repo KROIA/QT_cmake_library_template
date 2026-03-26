@@ -167,9 +167,10 @@ namespace LibraryNamespace
 		return widget;
 	}
 #else
-	QWidget* LibraryInfo::createInfoWidget(QWidget* parent)
+	QWidget* LibraryInfo::createInfoWidget(QWidget* parent, bool disableHyperlink)
 	{
 		LIBRARY_NAME_SHORT_UNUSED(parent);
+		LIBRARY_NAME_SHORT_UNUSED(disableHyperlink);
 		return nullptr;
 	}
 #endif
