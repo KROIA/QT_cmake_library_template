@@ -160,7 +160,8 @@ foreach(profile IN LISTS PROFILES)
         set_target_properties(${target} PROPERTIES
             AUTOMOC ON
             AUTOUIC ON
-            AUTORCC ON)
+            AUTORCC ON
+            AUTOUIC_SEARCH_PATHS "${CMAKE_CURRENT_SOURCE_DIR}/...")
     endif()
 endforeach()
 
