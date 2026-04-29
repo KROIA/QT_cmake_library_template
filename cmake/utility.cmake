@@ -169,6 +169,9 @@ macro(downloadStandardLibrary)
             set(_ldc_resolved_path "${LOCAL_DEPENDENCIES_PATH}")
         endif()
 
+        # Priority 1: explicit local override
+        # Priority 2: already downloaded into FETCHCONTENT_BASE_DIR — reuse without git ops
+        # Priority 3: download from git
         if(USE_LOCAL_DEPENDENCIES AND NOT "${_ldc_resolved_path}" STREQUAL ""
                 AND EXISTS "${_ldc_resolved_path}/${LIB_NAME}")
             message("Using local dependency: ${LIB_NAME} from: ${_ldc_resolved_path}/${LIB_NAME}")
@@ -176,13 +179,20 @@ macro(downloadStandardLibrary)
                 ${LIB_NAME}
                 SOURCE_DIR "${_ldc_resolved_path}/${LIB_NAME}"
             )
+        elseif(DEFINED FETCHCONTENT_BASE_DIR
+                AND EXISTS "${FETCHCONTENT_BASE_DIR}/${_ldc_name_lower}-src")
+            message("Using cached dependency: ${LIB_NAME} (${FETCHCONTENT_BASE_DIR}/${_ldc_name_lower}-src)")
+            FetchContent_Declare(
+                ${LIB_NAME}
+                SOURCE_DIR "${FETCHCONTENT_BASE_DIR}/${_ldc_name_lower}-src"
+            )
         else()
+            message("Downloading dependency: ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")
             FetchContent_Declare(
                 ${LIB_NAME}
                 GIT_REPOSITORY ${GIT_REPO}
                 GIT_TAG        ${GIT_TAG}
             )
-            message("Downloading dependency: ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")
         endif()
     endif()
     FetchContent_MakeAvailable(${LIB_NAME})
@@ -257,13 +267,20 @@ macro(downloadExternalLibrary)
                 ${LIB_NAME}
                 SOURCE_DIR "${_ldc_resolved_path}/${LIB_NAME}"
             )
+        elseif(DEFINED FETCHCONTENT_BASE_DIR
+                AND EXISTS "${FETCHCONTENT_BASE_DIR}/${_ldc_name_lower}-src")
+            message("Using cached dependency (external): ${LIB_NAME} (${FETCHCONTENT_BASE_DIR}/${_ldc_name_lower}-src)")
+            FetchContent_Declare(
+                ${LIB_NAME}
+                SOURCE_DIR "${FETCHCONTENT_BASE_DIR}/${_ldc_name_lower}-src"
+            )
         else()
+            message("Downloading dependency (external): ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")
             FetchContent_Declare(
                 ${LIB_NAME}
                 GIT_REPOSITORY ${GIT_REPO}
                 GIT_TAG        ${GIT_TAG}
             )
-            message("Downloading dependency (external): ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")
         endif()
     endif()
     FetchContent_MakeAvailable(${LIB_NAME})
