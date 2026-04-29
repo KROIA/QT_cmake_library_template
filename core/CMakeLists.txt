@@ -52,24 +52,14 @@ if(QT_ENABLE)
     GLOB_FILES(UI_FILES *.ui)
     GLOB_FILES(RES_FILES *.qrc)
 
-    # Identify headers containing Q_OBJECT macros
-    set(MOC_HEADERS "")
-    foreach(HEADER ${H_FILES})
-        file(READ ${HEADER} HEADER_CONTENTS)
-        if(HEADER_CONTENTS MATCHES "Q_OBJECT")
-            list(APPEND MOC_HEADERS ${HEADER})
-        endif()
-    endforeach()
-
-    # Use qt_wrap_cpp to generate moc files for QObject classes
-    qt_wrap_internal_cpp(CPP_MOC_FILES ${MOC_HEADERS})
-    qt_wrap_internal_ui(UIS_HDRS ${UI_FILES})
-    qt_add_internal_resources(RESOURCE_FILES ${RES_FILES})
-
+    # Add UI and resource files to sources.
+    # AUTOMOC/AUTOUIC/AUTORCC are set per-target below so that the moc tool
+    # receives each target's compile definitions (e.g. QT_WIDGETS_LIB).
+    # Manual qt5_wrap_cpp without TARGET would silently produce empty moc files
+    # for any header guarded by a compile-definition #ifdef.
     set(SOURCES ${SOURCES}
-	    ${CPP_MOC_FILES}
-	    ${UIS_HDRS}
-        ${RESOURCE_FILES})
+        ${UI_FILES}
+        ${RES_FILES})
 
     # Link the QT modules to your executable
     foreach(MODULE ${QT_MODULES})
@@ -165,6 +155,13 @@ foreach(profile IN LISTS PROFILES)
         $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
         $<INSTALL_INTERFACE:include/${LIBRARY_NAME}>
     )
+
+    if(QT_ENABLE)
+        set_target_properties(${target} PROPERTIES
+            AUTOMOC ON
+            AUTOUIC ON
+            AUTORCC ON)
+    endif()
 endforeach()
 
 

@@ -79,19 +79,6 @@ if(QT_ENABLE)
     GLOB_FILES(UI_FILES *.ui)
     GLOB_FILES(RES_FILES *.qrc)
 
-    # Only wrap headers that actually contain Q_OBJECT
-    set(MOC_HEADERS "")
-    foreach(HEADER ${H_FILES})
-        file(READ ${HEADER} HEADER_CONTENTS)
-        if(HEADER_CONTENTS MATCHES "Q_OBJECT")
-            list(APPEND MOC_HEADERS ${HEADER})
-        endif()
-    endforeach()
-
-    qt_wrap_internal_cpp(CPP_MOC_FILES ${MOC_HEADERS})
-    qt_wrap_internal_ui(UIS_HDRS ${UI_FILES})
-    qt_add_internal_resources(RESOURCE_FILES ${RES_FILES})
-
     list(APPEND DEFINES QT_ENABLED)
     # Check if QT_MODULES contains Widgets
     list(FIND QT_MODULES "Widgets" _index)
@@ -99,10 +86,11 @@ if(QT_ENABLE)
         list(APPEND DEFINES QT_WIDGETS_ENABLED)
     endif()
 
+    # Add UI and resource files to sources.
+    # AUTOMOC/AUTOUIC/AUTORCC are set on the target below.
     set(SOURCES ${SOURCES}
-	    ${CPP_MOC_FILES}
-	    ${UIS_HDRS}
-        ${RESOURCE_FILES})
+        ${UI_FILES}
+        ${RES_FILES})
 
     # Link the QT modules to your executable
     foreach(MODULE ${QT_MODULES})
@@ -112,6 +100,13 @@ if(QT_ENABLE)
 endif()
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${ADDITIONAL_SOURCES})
+
+if(QT_ENABLE)
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        AUTOMOC ON
+        AUTOUIC ON
+        AUTORCC ON)
+endif()
 
 
 if(${PROFILING_NAME})
