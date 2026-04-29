@@ -86,10 +86,11 @@ if(QT_ENABLE)
         list(APPEND DEFINES QT_WIDGETS_ENABLED)
     endif()
 
-    # Add UI and resource files to sources.
-    # AUTOMOC/AUTOUIC/AUTORCC are set on the target below.
+    # Process .ui files explicitly (same reasoning as core/CMakeLists.txt).
+    qt_wrap_internal_ui(UIS_HDRS ${UI_FILES})
+
     set(SOURCES ${SOURCES}
-        ${UI_FILES}
+        ${UIS_HDRS}
         ${RES_FILES})
 
     # Link the QT modules to your executable
@@ -104,9 +105,7 @@ add_executable(${PROJECT_NAME} ${SOURCES} ${ADDITIONAL_SOURCES})
 if(QT_ENABLE)
     set_target_properties(${PROJECT_NAME} PROPERTIES
         AUTOMOC ON
-        AUTOUIC ON
-        AUTORCC ON
-        AUTOUIC_SEARCH_PATHS "${CMAKE_CURRENT_SOURCE_DIR}/...")
+        AUTORCC ON)
 endif()
 
 

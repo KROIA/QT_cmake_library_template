@@ -52,13 +52,19 @@ if(QT_ENABLE)
     GLOB_FILES(UI_FILES *.ui)
     GLOB_FILES(RES_FILES *.qrc)
 
-    # Add UI and resource files to sources.
-    # AUTOMOC/AUTOUIC/AUTORCC are set per-target below so that the moc tool
-    # receives each target's compile definitions (e.g. QT_WIDGETS_LIB).
-    # Manual qt5_wrap_cpp without TARGET would silently produce empty moc files
-    # for any header guarded by a compile-definition #ifdef.
+    # Process .ui files explicitly.  qt_wrap_internal_ui receives the absolute
+    # paths produced by GLOB_RECURSE, so it works regardless of where .ui files
+    # sit inside core/.  AUTOUIC is NOT enabled on the targets because AUTOUIC
+    # searches for .ui files relative to the including .cpp directory and the
+    # AUTOUIC_SEARCH_PATHS /... recursive syntax has inconsistent behaviour
+    # across CMake versions when the .ui and .cpp are in different sub-trees.
+    # Generated ui_*.h files land in CMAKE_CURRENT_BINARY_DIR which is already
+    # in every target's include path via $<BUILD_INTERFACE:...>.
+    qt_wrap_internal_ui(UIS_HDRS ${UI_FILES})
+
+    # .qrc files stay in SOURCES; AUTORCC (set per-target below) handles them.
     set(SOURCES ${SOURCES}
-        ${UI_FILES}
+        ${UIS_HDRS}
         ${RES_FILES})
 
     # Link the QT modules to your executable
@@ -159,9 +165,7 @@ foreach(profile IN LISTS PROFILES)
     if(QT_ENABLE)
         set_target_properties(${target} PROPERTIES
             AUTOMOC ON
-            AUTOUIC ON
-            AUTORCC ON
-            AUTOUIC_SEARCH_PATHS "${CMAKE_CURRENT_SOURCE_DIR}/...")
+            AUTORCC ON)
     endif()
 endforeach()
 
