@@ -6,7 +6,7 @@
 
 #include "LibraryName_global.h"
 #include "LibraryName_debug.h"
-#include "LibraryName_version.h"
+#include "LibraryName_meta.h"
 
 #include <sstream>
 
@@ -61,8 +61,8 @@ namespace LibraryNamespace
 
 		static constexpr Version version{ versionMajor, versionMinor, versionPatch };
 
-		// Library name
-		static constexpr const char* name				= "LibraryName";
+		// Library name — driven by LIBRARY_NAME in CMakeLists.txt
+		static constexpr const char* name				= LibraryName_LIBRARY_NAME;
 		static constexpr const char* author				= "";
 		static constexpr const char* email				= "";
 		static constexpr const char* website			= "";
