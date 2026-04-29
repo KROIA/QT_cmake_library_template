@@ -198,6 +198,14 @@ macro(downloadStandardLibrary)
         list(APPEND DEPS_FOR_STATIC_PROFILE_LIB ${LIB_NAME}_static ${ADDITIONAL_STATIC_PROFILE_LIB_DEPENDENCIES})
     endif()
 
+    # Auto-generate LIB_MACRO_NAME from LIB_NAME when the caller did not set it.
+    # e.g. Logger → LOGGER_LIBRARY_AVAILABLE, imgui-sfml → IMGUI_SFML_LIBRARY_AVAILABLE
+    if(NOT DEFINED LIB_MACRO_NAME OR "${LIB_MACRO_NAME}" STREQUAL "")
+        string(TOUPPER "${LIB_NAME}" _ldc_auto_macro)
+        string(REPLACE "-" "_" _ldc_auto_macro "${_ldc_auto_macro}")
+        set(LIB_MACRO_NAME "${_ldc_auto_macro}_LIBRARY_AVAILABLE")
+    endif()
+
     set(${LIBRARY_MACRO_NAME} "${${LIBRARY_MACRO_NAME}};${LIB_MACRO_NAME}" PARENT_SCOPE)
     set(${SHARED_LIB} "${${SHARED_LIB}};${DEPS_FOR_SHARED_LIB}" PARENT_SCOPE)
     set(${STATIC_LIB} "${${STATIC_LIB}};${DEPS_FOR_STATIC_LIB}" PARENT_SCOPE)
@@ -277,6 +285,14 @@ macro(downloadExternalLibrary)
     list(APPEND DEPS_FOR_SHARED_LIB ${SHARED_LIB_DEPENDENCY} ${ADDITIONAL_SHARED_LIB_DEPENDENCIES})
     list(APPEND DEPS_FOR_STATIC_LIB ${STATIC_LIB_DEPENDENCY} ${ADDITIONAL_STATIC_LIB_DEPENDENCIES})
     list(APPEND DEPS_FOR_STATIC_PROFILE_LIB ${STATIC_PROFILE_LIB_DEPENDENCY} ${ADDITIONAL_STATIC_PROFILE_LIB_DEPENDENCIES}) # only use for static profiling profile
+
+    # Auto-generate LIB_MACRO_NAME from LIB_NAME when the caller did not set it.
+    # e.g. SFML → SFML_LIBRARY_AVAILABLE, imgui-sfml → IMGUI_SFML_LIBRARY_AVAILABLE
+    if(NOT DEFINED LIB_MACRO_NAME OR "${LIB_MACRO_NAME}" STREQUAL "")
+        string(TOUPPER "${LIB_NAME}" _ldc_auto_macro)
+        string(REPLACE "-" "_" _ldc_auto_macro "${_ldc_auto_macro}")
+        set(LIB_MACRO_NAME "${_ldc_auto_macro}_LIBRARY_AVAILABLE")
+    endif()
 
     set(${LIBRARY_MACRO_NAME} "${${LIBRARY_MACRO_NAME}};${LIB_MACRO_NAME}" PARENT_SCOPE)
     set(${SHARED_LIB} "${${SHARED_LIB}};${DEPS_FOR_SHARED_LIB}" PARENT_SCOPE)
