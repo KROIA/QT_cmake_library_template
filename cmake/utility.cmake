@@ -12,16 +12,24 @@ include(FetchContent)
 # Relative paths are resolved from CMAKE_SOURCE_DIR (the project root folder
 # that contains the top-level CMakeLists.txt), NOT from the build directory.
 #
+# These variables are declared ONLY in the top-level project.  When this
+# library is loaded as a FetchContent dependency the variables are already
+# in the CMake cache (set by the top-level project's cmake args or presets)
+# and must not be re-declared — re-declaring would reset the default to OFF
+# if the cache entry somehow got cleared, hiding the top-level setting.
+# All transitive dependencies automatically inherit the top-level values
+# because cache variables are global.
+#
 # Examples (CMakePresets.json or command line):
 #   -DUSE_LOCAL_DEPENDENCIES=ON -DLOCAL_DEPENDENCIES_PATH="C:/Projects/TemplateTests"
 #   -DUSE_LOCAL_DEPENDENCIES=ON -DLOCAL_DEPENDENCIES_PATH="../"
 # ---------------------------------------------------------------------------
-option(USE_LOCAL_DEPENDENCIES
-    "Use local source folders instead of downloading dependencies from git" OFF)
-# Declaring as a cache variable (no FORCE) means it won't override a value
-# already passed on the command line or stored in the CMake cache.
-set(LOCAL_DEPENDENCIES_PATH "" CACHE PATH
-    "Root folder containing local dependency clones (one sub-folder per LIB_NAME). Absolute or relative to the project root.")
+if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
+    option(USE_LOCAL_DEPENDENCIES
+        "Use local source folders instead of downloading dependencies from git" OFF)
+    set(LOCAL_DEPENDENCIES_PATH "" CACHE PATH
+        "Root folder containing local dependency clones (one sub-folder per LIB_NAME). Absolute or relative to the project root.")
+endif()
 
 # Macro to search for files with a given extension.
 # call:
@@ -146,32 +154,36 @@ macro(downloadStandardLibrary)
     set(${LIB_NAME}_NO_EXAMPLES  ${NO_EXAMPLES})
     set(${LIB_NAME}_NO_UNITTESTS ${NO_UNITTESTS})
 
-    # Resolve LOCAL_DEPENDENCIES_PATH: relative paths are taken from CMAKE_SOURCE_DIR
-    # (the project root), not from the build directory or the current source dir.
-    if(NOT "${LOCAL_DEPENDENCIES_PATH}" STREQUAL "" AND NOT IS_ABSOLUTE "${LOCAL_DEPENDENCIES_PATH}")
-        get_filename_component(_ldc_resolved_path
-            "${CMAKE_SOURCE_DIR}/${LOCAL_DEPENDENCIES_PATH}" ABSOLUTE)
-    else()
-        set(_ldc_resolved_path "${LOCAL_DEPENDENCIES_PATH}")
-    endif()
+    # Check if this library was already populated by an earlier call (diamond dependency).
+    # If it was, skip FetchContent_Declare entirely so the top-level project's
+    # declaration (local path or git) always wins, and no duplicate messages appear.
+    FetchContent_GetProperties(${LIB_NAME})
+    string(TOLOWER "${LIB_NAME}" _ldc_name_lower)
+    if(NOT ${_ldc_name_lower}_POPULATED)
+        # Resolve LOCAL_DEPENDENCIES_PATH: relative paths are taken from CMAKE_SOURCE_DIR
+        # (the project root), not from the build directory or the current source dir.
+        if(NOT "${LOCAL_DEPENDENCIES_PATH}" STREQUAL "" AND NOT IS_ABSOLUTE "${LOCAL_DEPENDENCIES_PATH}")
+            get_filename_component(_ldc_resolved_path
+                "${CMAKE_SOURCE_DIR}/${LOCAL_DEPENDENCIES_PATH}" ABSOLUTE)
+        else()
+            set(_ldc_resolved_path "${LOCAL_DEPENDENCIES_PATH}")
+        endif()
 
-    # Using FetchContent_Declare in both branches (with SOURCE_DIR for local) ensures
-    # CMake's "already populated" guard fires correctly when multiple libraries depend
-    # on the same target — preventing duplicate add_library errors.
-    if(USE_LOCAL_DEPENDENCIES AND NOT "${_ldc_resolved_path}" STREQUAL ""
-            AND EXISTS "${_ldc_resolved_path}/${LIB_NAME}")
-        message("Using local dependency: ${LIB_NAME} from: ${_ldc_resolved_path}/${LIB_NAME}")
-        FetchContent_Declare(
-            ${LIB_NAME}
-            SOURCE_DIR "${_ldc_resolved_path}/${LIB_NAME}"
-        )
-    else()
-        FetchContent_Declare(
-            ${LIB_NAME}
-            GIT_REPOSITORY ${GIT_REPO}
-            GIT_TAG        ${GIT_TAG}
-        )
-        message("Downloading dependency: ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")
+        if(USE_LOCAL_DEPENDENCIES AND NOT "${_ldc_resolved_path}" STREQUAL ""
+                AND EXISTS "${_ldc_resolved_path}/${LIB_NAME}")
+            message("Using local dependency: ${LIB_NAME} from: ${_ldc_resolved_path}/${LIB_NAME}")
+            FetchContent_Declare(
+                ${LIB_NAME}
+                SOURCE_DIR "${_ldc_resolved_path}/${LIB_NAME}"
+            )
+        else()
+            FetchContent_Declare(
+                ${LIB_NAME}
+                GIT_REPOSITORY ${GIT_REPO}
+                GIT_TAG        ${GIT_TAG}
+            )
+            message("Downloading dependency: ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")
+        endif()
     endif()
     FetchContent_MakeAvailable(${LIB_NAME})
 
@@ -219,28 +231,32 @@ endmacro()
 #   STATIC_PROFILE_LIB: passed variable by the caller to accumulate all static profiling libraries
 #   INCLUDE_PATHS: passed variable by the caller to accumulate all include paths
 macro(downloadExternalLibrary)
-    # Resolve LOCAL_DEPENDENCIES_PATH: relative paths are taken from CMAKE_SOURCE_DIR.
-    if(NOT "${LOCAL_DEPENDENCIES_PATH}" STREQUAL "" AND NOT IS_ABSOLUTE "${LOCAL_DEPENDENCIES_PATH}")
-        get_filename_component(_ldc_resolved_path
-            "${CMAKE_SOURCE_DIR}/${LOCAL_DEPENDENCIES_PATH}" ABSOLUTE)
-    else()
-        set(_ldc_resolved_path "${LOCAL_DEPENDENCIES_PATH}")
-    endif()
+    FetchContent_GetProperties(${LIB_NAME})
+    string(TOLOWER "${LIB_NAME}" _ldc_name_lower)
+    if(NOT ${_ldc_name_lower}_POPULATED)
+        # Resolve LOCAL_DEPENDENCIES_PATH: relative paths are taken from CMAKE_SOURCE_DIR.
+        if(NOT "${LOCAL_DEPENDENCIES_PATH}" STREQUAL "" AND NOT IS_ABSOLUTE "${LOCAL_DEPENDENCIES_PATH}")
+            get_filename_component(_ldc_resolved_path
+                "${CMAKE_SOURCE_DIR}/${LOCAL_DEPENDENCIES_PATH}" ABSOLUTE)
+        else()
+            set(_ldc_resolved_path "${LOCAL_DEPENDENCIES_PATH}")
+        endif()
 
-    if(USE_LOCAL_DEPENDENCIES AND NOT "${_ldc_resolved_path}" STREQUAL ""
-            AND EXISTS "${_ldc_resolved_path}/${LIB_NAME}")
-        message("Using local dependency (external): ${LIB_NAME} from: ${_ldc_resolved_path}/${LIB_NAME}")
-        FetchContent_Declare(
-            ${LIB_NAME}
-            SOURCE_DIR "${_ldc_resolved_path}/${LIB_NAME}"
-        )
-    else()
-        FetchContent_Declare(
-            ${LIB_NAME}
-            GIT_REPOSITORY ${GIT_REPO}
-            GIT_TAG        ${GIT_TAG}
-        )
-        message("Downloading dependency (external): ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")
+        if(USE_LOCAL_DEPENDENCIES AND NOT "${_ldc_resolved_path}" STREQUAL ""
+                AND EXISTS "${_ldc_resolved_path}/${LIB_NAME}")
+            message("Using local dependency (external): ${LIB_NAME} from: ${_ldc_resolved_path}/${LIB_NAME}")
+            FetchContent_Declare(
+                ${LIB_NAME}
+                SOURCE_DIR "${_ldc_resolved_path}/${LIB_NAME}"
+            )
+        else()
+            FetchContent_Declare(
+                ${LIB_NAME}
+                GIT_REPOSITORY ${GIT_REPO}
+                GIT_TAG        ${GIT_TAG}
+            )
+            message("Downloading dependency (external): ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")
+        endif()
     endif()
     FetchContent_MakeAvailable(${LIB_NAME})
 
