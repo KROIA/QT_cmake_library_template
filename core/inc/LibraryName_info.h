@@ -6,6 +6,7 @@
 
 #include "LibraryName_global.h"
 #include "LibraryName_debug.h"
+#include "LibraryName_version.h"
 
 #include <sstream>
 
@@ -53,10 +54,10 @@ namespace LibraryNamespace
 		};
 
 
-		// Current version of the library
-		static constexpr int versionMajor				= 0;
-		static constexpr int versionMinor				= 0;
-		static constexpr int versionPatch				= 0;
+		// Current version of the library — driven by LIBRARY_VERSION in CMakeLists.txt
+		static constexpr int versionMajor				= LibraryName_VERSION_MAJOR;
+		static constexpr int versionMinor				= LibraryName_VERSION_MINOR;
+		static constexpr int versionPatch				= LibraryName_VERSION_PATCH;
 
 		static constexpr Version version{ versionMajor, versionMinor, versionPatch };
 
