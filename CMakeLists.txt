@@ -150,6 +150,14 @@ if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
     set(INSTALL_INCLUDE_PATH "${CMAKE_INSTALL_PREFIX}/${RELATIVE_INSTALL_INCLUDE_FOLDER}")
     set(FETCHCONTENT_BASE_DIR "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/dependencies/cache" CACHE PATH "Base directory for FetchContent" FORCE)
 
+    # Do not re-download or git-fetch dependencies that are already present in
+    # FETCHCONTENT_BASE_DIR.  On a plain reconfigure CMake will reuse the
+    # existing source trees without touching the network.
+    # To force a full re-fetch: delete the build/…/dependencies/cache directory
+    # (or the whole build folder) so the source trees disappear.
+    set(FETCHCONTENT_UPDATES_DISCONNECTED ON CACHE BOOL
+        "Skip git-fetch/update for FetchContent deps already downloaded. Delete build/…/dependencies/cache to force a re-fetch.")
+
     # Print output paths
     message(STATUS "CMAKE_ARCHIVE_OUTPUT_DIRECTORY: ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}")
     message(STATUS "CMAKE_LIBRARY_OUTPUT_DIRECTORY: ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
