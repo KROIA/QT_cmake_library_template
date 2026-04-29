@@ -104,6 +104,55 @@ endfunction()
 
 
 
+# Macro to declare a FetchContent dependency with local/cached/git fallback.
+# Use this instead of raw FetchContent_Declare() when you need to call
+# FetchContent_MakeAvailable() separately (e.g. when ordering between deps matters).
+#
+# Call:
+#   smartDeclare(<LIB_NAME> <GIT_REPO> <GIT_TAG>)
+#
+# Then call FetchContent_MakeAvailable(<LIB_NAME>) when ready.
+# Skips the Declare entirely if the library is already populated.
+# Respects USE_LOCAL_DEPENDENCIES and LOCAL_DEPENDENCIES_PATH.
+macro(smartDeclare LIB_NAME GIT_REPO GIT_TAG)
+    FetchContent_GetProperties(${LIB_NAME})
+    string(TOLOWER "${LIB_NAME}" _sfd_name_lower)
+    if(NOT ${_sfd_name_lower}_POPULATED)
+        if(NOT "${LOCAL_DEPENDENCIES_PATH}" STREQUAL "" AND NOT IS_ABSOLUTE "${LOCAL_DEPENDENCIES_PATH}")
+            get_filename_component(_sfd_resolved_path
+                "${CMAKE_SOURCE_DIR}/${LOCAL_DEPENDENCIES_PATH}" ABSOLUTE)
+        else()
+            set(_sfd_resolved_path "${LOCAL_DEPENDENCIES_PATH}")
+        endif()
+
+        if(USE_LOCAL_DEPENDENCIES AND NOT "${_sfd_resolved_path}" STREQUAL ""
+                AND EXISTS "${_sfd_resolved_path}/${LIB_NAME}")
+            message("Using local dependency: ${LIB_NAME} from: ${_sfd_resolved_path}/${LIB_NAME}")
+            FetchContent_Declare(
+                ${LIB_NAME}
+                SOURCE_DIR "${_sfd_resolved_path}/${LIB_NAME}"
+            )
+        elseif(DEFINED FETCHCONTENT_BASE_DIR
+                AND EXISTS "${FETCHCONTENT_BASE_DIR}/${_sfd_name_lower}-src")
+            message("Using cached dependency: ${LIB_NAME} (${FETCHCONTENT_BASE_DIR}/${_sfd_name_lower}-src)")
+            FetchContent_Declare(
+                ${LIB_NAME}
+                SOURCE_DIR "${FETCHCONTENT_BASE_DIR}/${_sfd_name_lower}-src"
+            )
+        else()
+            message("Downloading dependency: ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")
+            FetchContent_Declare(
+                ${LIB_NAME}
+                GIT_REPOSITORY ${GIT_REPO}
+                GIT_TAG        ${GIT_TAG}
+            )
+        endif()
+    endif()
+endmacro()
+
+
+
+
 # Macro to download and setup a default library using FetchContent.
 # A default library is a library that was created using this project's template or is compatible with this macro.
 # 
