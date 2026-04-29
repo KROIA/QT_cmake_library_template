@@ -53,12 +53,9 @@ foreach(child ${children})
     include(${dependency_dir}/${child})
 endforeach()
 
-get_property(DEPENDENCY_NAME_MACRO_TMP CACHE "DEPENDENCY_NAME_MACRO" PROPERTY VALUE)
-
-# Remove duplicates from DEPENDENCY_NAME_MACRO
-list(APPEND DEPENDENCY_NAME_MACRO ${DEPENDENCY_NAME_MACRO_TMP})
+# Remove duplicates then cache the exact set built during this configure run.
+# Do NOT merge with the previous cached value — that causes removed dependencies
+# to persist as phantom defines across re-configures.
 list(REMOVE_DUPLICATES DEPENDENCY_NAME_MACRO)
-
-# Caching DEPENDENCY_NAME_MACRO
 set(DEPENDENCY_NAME_MACRO ${DEPENDENCY_NAME_MACRO} CACHE STRING "Global defines to use in code to check for available libraries" FORCE)
 

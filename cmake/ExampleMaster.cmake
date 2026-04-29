@@ -52,10 +52,6 @@ if(QT_ENABLE)
     list(LENGTH QT_MODULES list_length)
     if(NOT list_length EQUAL 0)
         find_package(${QT_PACKAGE_NAME} REQUIRED COMPONENTS ${QT_MODULES})
-
-        set(CMAKE_AUTOMOC ON)
-        set(CMAKE_AUTORCC ON)
-        #set(CMAKE_AUTOUIC ON)
     else()
         message("ERROR: QT_MODULES is empty. Please specify the required modules or set the variable \"QT_ENABLE\" to OFF")
     endif()
@@ -66,10 +62,10 @@ include_directories(inc)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 # Get all source files
-FILE_DIRECTORIES(H_FILES *.h)
-FILE_DIRECTORIES(CPP_FILES *.cpp)
-FILE_DIRECTORIES(C_FILES *.c)
-FILE_DIRECTORIES(INL_FILES *.inl)
+GLOB_FILES(H_FILES *.h)
+GLOB_FILES(CPP_FILES *.cpp)
+GLOB_FILES(C_FILES *.c)
+GLOB_FILES(INL_FILES *.inl)
 
 
 set(SOURCES 
@@ -80,10 +76,19 @@ set(SOURCES
 
 if(QT_ENABLE)
     # Search for QT specific files
-    FILE_DIRECTORIES(UI_FILES *.ui)    
-    FILE_DIRECTORIES(RES_FILES *.qrc)    
+    GLOB_FILES(UI_FILES *.ui)
+    GLOB_FILES(RES_FILES *.qrc)
 
-    qt_wrap_internal_cpp(CPP_MOC_FILES ${H_FILES})
+    # Only wrap headers that actually contain Q_OBJECT
+    set(MOC_HEADERS "")
+    foreach(HEADER ${H_FILES})
+        file(READ ${HEADER} HEADER_CONTENTS)
+        if(HEADER_CONTENTS MATCHES "Q_OBJECT")
+            list(APPEND MOC_HEADERS ${HEADER})
+        endif()
+    endforeach()
+
+    qt_wrap_internal_cpp(CPP_MOC_FILES ${MOC_HEADERS})
     qt_wrap_internal_ui(UIS_HDRS ${UI_FILES})
     qt_add_internal_resources(RESOURCE_FILES ${RES_FILES})
 

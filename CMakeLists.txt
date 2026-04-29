@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.20)
 
 
 ## INFO
-## Template version: 1.5.4
+## Template version: 1.5.5
 ##
 ## This is a template for a CMake project.
 ## It is designed to be used with the Visual Studio
@@ -31,6 +31,9 @@ include(cmake/utility.cmake)
 
 # Name of the library
 set(LIBRARY_NAME LibraryName)                   # <AUTO_REPLACED>
+
+# Library version (used for CMake package version file)
+set(LIBRARY_VERSION "1.0.0")                    # <AUTO_REPLACED>
 
 # Define is only active if the library is built
 set(LIB_DEFINE LIBRARY_NAME_LIB)                # <AUTO_REPLACED>
@@ -129,7 +132,7 @@ set_if_not_defined(QT_COMPILER "autoFind")
 # --------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------
 
-project(${LIBRARY_NAME})
+project(${LIBRARY_NAME} VERSION ${LIBRARY_VERSION})
  
 ## USER_SECTION_START 9
 
@@ -163,8 +166,6 @@ endif()
 
 ## USER_SECTION_END
 
-
-link_directories(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 
 ## USER_SECTION_START 4
 
@@ -206,7 +207,7 @@ endif()
 
 if(COMPILE_UNITTESTS AND NOT LibraryName_NO_UNITTESTS)
     message("Include unittests for ${LIBRARY_NAME}")
-    add_subdirectory(unitTests)
+    add_subdirectory(unittests)
 endif()
 
 ## USER_SECTION_START 6

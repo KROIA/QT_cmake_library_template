@@ -1,19 +1,32 @@
 include(FetchContent)
 
-# Macro to search for files with given file ending.
-# call:
-#   FILE_DIRECTORIES(H_FILES *.h)
+# ---------------------------------------------------------------------------
+# Offline / local dependency mode
 #
-# all *.h files will be saved in the H_FILES variable
-MACRO(FILE_DIRECTORIES return_list ending)
-    FILE(GLOB_RECURSE new_list ${ending})
-    SET(dir_list "")
-    FOREACH(file_path ${new_list})
-        GET_FILENAME_COMPONENT(dir_path ${file_path} PATH)
-        SET(dir_list ${dir_list} ${file_path})
-    ENDFOREACH()
-    LIST(REMOVE_DUPLICATES dir_list)
-    SET(${return_list} ${dir_list})
+# Set USE_LOCAL_DEPENDENCIES=ON and LOCAL_DEPENDENCIES_PATH to a directory
+# that contains one sub-folder per dependency (named exactly as LIB_NAME).
+# When the flag is ON and the folder exists, add_subdirectory is used
+# instead of FetchContent — no internet access required.
+#
+# Example (CMakePresets.json or command line):
+#   -DUSE_LOCAL_DEPENDENCIES=ON
+#   -DLOCAL_DEPENDENCIES_PATH="C:/Projects/TemplateTests"
+# ---------------------------------------------------------------------------
+option(USE_LOCAL_DEPENDENCIES
+    "Use local source folders instead of downloading dependencies from git" OFF)
+# Declaring as a cache variable (no FORCE) means it won't override a value
+# already passed on the command line or stored in the CMake cache.
+set(LOCAL_DEPENDENCIES_PATH "" CACHE PATH
+    "Root folder containing local dependency clones (one sub-folder per LIB_NAME)")
+
+# Macro to search for files with a given extension.
+# call:
+#   GLOB_FILES(H_FILES *.h)
+#
+# All matching files will be saved in the H_FILES variable.
+# CONFIGURE_DEPENDS causes CMake to re-run configure when the file list changes.
+MACRO(GLOB_FILES return_list ending)
+    FILE(GLOB_RECURSE ${return_list} CONFIGURE_DEPENDS ${ending})
 ENDMACRO()
 
 
@@ -61,23 +74,10 @@ endfunction()
 
 
 function(copyLibraryHeaders headerRootFolder destinationPath destinationFolderName)
-    # Copy the folder
-    file(COPY ${headerRootFolder}
-         DESTINATION ${CMAKE_BINARY_DIR})
-
-    get_filename_component(FOLDER_NAME ${headerRootFolder} NAME)
-    file(REMOVE_RECURSE "${CMAKE_BINARY_DIR}/${destinationFolderName}")
-
-    # Rename the copied folder
-    file(RENAME ${CMAKE_BINARY_DIR}/${FOLDER_NAME}
-                ${CMAKE_BINARY_DIR}/${destinationFolderName})
-
-    # Install the modified folder
-    install(DIRECTORY ${CMAKE_BINARY_DIR}/${destinationFolderName}
-            DESTINATION ${destinationPath})
-
+    install(DIRECTORY "${headerRootFolder}/"
+            DESTINATION "${destinationPath}/${destinationFolderName}"
+            FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp")
     message("Installing headers from: ${headerRootFolder} to ${destinationPath}/${destinationFolderName}")
-
 endfunction()
 
 
@@ -139,22 +139,39 @@ dep(DEPENDENCY_NAME_MACRO
     DEPENDENCIES_INCLUDE_PATHS)
 #]]
 macro(downloadStandardLibrary)
-    FetchContent_Declare(
-        ${LIB_NAME}
-        GIT_REPOSITORY ${GIT_REPO}
-        GIT_TAG        ${GIT_TAG}
-    )
-
-    set(${LIB_NAME}_NO_EXAMPLES ${NO_EXAMPLES})	
+    set(${LIB_NAME}_NO_EXAMPLES  ${NO_EXAMPLES})
     set(${LIB_NAME}_NO_UNITTESTS ${NO_UNITTESTS})
 
-    message("Downloading dependency: ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")
+    # Using FetchContent_Declare in both branches (with SOURCE_DIR for local) ensures
+    # CMake's "already populated" guard fires correctly when multiple libraries depend
+    # on the same target — preventing duplicate add_library errors.
+    if(USE_LOCAL_DEPENDENCIES AND NOT "${LOCAL_DEPENDENCIES_PATH}" STREQUAL ""
+            AND EXISTS "${LOCAL_DEPENDENCIES_PATH}/${LIB_NAME}")
+        message("Using local dependency: ${LIB_NAME} from: ${LOCAL_DEPENDENCIES_PATH}/${LIB_NAME}")
+        FetchContent_Declare(
+            ${LIB_NAME}
+            SOURCE_DIR "${LOCAL_DEPENDENCIES_PATH}/${LIB_NAME}"
+        )
+    else()
+        FetchContent_Declare(
+            ${LIB_NAME}
+            GIT_REPOSITORY ${GIT_REPO}
+            GIT_TAG        ${GIT_TAG}
+        )
+        message("Downloading dependency: ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")
+    endif()
     FetchContent_MakeAvailable(${LIB_NAME})
 
     # Add this library to the specific profiles of this project
     list(APPEND DEPS_FOR_SHARED_LIB ${LIB_NAME}_shared ${ADDITIONAL_SHARED_LIB_DEPENDENCIES})
     list(APPEND DEPS_FOR_STATIC_LIB ${LIB_NAME}_static ${ADDITIONAL_STATIC_LIB_DEPENDENCIES})
-    list(APPEND DEPS_FOR_STATIC_PROFILE_LIB ${LIB_NAME}_static_profile ${ADDITIONAL_STATIC_PROFILE_LIB_DEPENDENCIES}) # only use for static profiling profile
+
+    # Only link the profile variant if the dependency actually built one
+    if(TARGET ${LIB_NAME}_static_profile)
+        list(APPEND DEPS_FOR_STATIC_PROFILE_LIB ${LIB_NAME}_static_profile ${ADDITIONAL_STATIC_PROFILE_LIB_DEPENDENCIES})
+    else()
+        list(APPEND DEPS_FOR_STATIC_PROFILE_LIB ${LIB_NAME}_static ${ADDITIONAL_STATIC_PROFILE_LIB_DEPENDENCIES})
+    endif()
 
     set(${LIBRARY_MACRO_NAME} "${${LIBRARY_MACRO_NAME}};${LIB_MACRO_NAME}" PARENT_SCOPE)
     set(${SHARED_LIB} "${${SHARED_LIB}};${DEPS_FOR_SHARED_LIB}" PARENT_SCOPE)
@@ -189,13 +206,21 @@ endmacro()
 #   STATIC_PROFILE_LIB: passed variable by the caller to accumulate all static profiling libraries
 #   INCLUDE_PATHS: passed variable by the caller to accumulate all include paths
 macro(downloadExternalLibrary)
-    FetchContent_Declare(
-        ${LIB_NAME}
-        GIT_REPOSITORY ${GIT_REPO}
-        GIT_TAG        ${GIT_TAG}
-    )
-
-    message("Downloading dependency: ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")
+    if(USE_LOCAL_DEPENDENCIES AND NOT "${LOCAL_DEPENDENCIES_PATH}" STREQUAL ""
+            AND EXISTS "${LOCAL_DEPENDENCIES_PATH}/${LIB_NAME}")
+        message("Using local dependency (external): ${LIB_NAME} from: ${LOCAL_DEPENDENCIES_PATH}/${LIB_NAME}")
+        FetchContent_Declare(
+            ${LIB_NAME}
+            SOURCE_DIR "${LOCAL_DEPENDENCIES_PATH}/${LIB_NAME}"
+        )
+    else()
+        FetchContent_Declare(
+            ${LIB_NAME}
+            GIT_REPOSITORY ${GIT_REPO}
+            GIT_TAG        ${GIT_TAG}
+        )
+        message("Downloading dependency (external): ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")
+    endif()
     FetchContent_MakeAvailable(${LIB_NAME})
 
     
