@@ -43,18 +43,16 @@ In the file LibraryName_global.h is a section with the following code:
 /// USER_SECTION_END
 
 #if defined(LIBRARY_NAME_LIB)
-	#pragma warning (error : 4715) // not all control paths return a value should be an error instead of a warning
-	#pragma warning (error : 4700) // uninitialized local variable used should be an error instead of a warning
-	#pragma warning (error : 4244) // Implicit conversions between data types 
-	#pragma warning (error : 4100) // Unused variables
-	#pragma warning (error : 4018) // Type mismatch 
-	#pragma warning (error : 4996) // Unsafe function calls
-	#pragma warning (error : 4456) // declaration of 'x' hides previous local declaration
-	#pragma warning (error : 4065) // switch statement contains 'default' but no 'case' labels
-	#pragma warning (error : 4189) // Unused return value
-	#pragma warning (error : 4996) // unsafe function calls
-	#pragma warning (error : 4018) // signed/unsigned mismatch
-	#pragma warning (error : 4172) // Returning address of local temporary object
+    #pragma warning (error : 4715) // not all control paths return a value
+    #pragma warning (error : 4700) // uninitialized local variable used
+    #pragma warning (error : 4244) // implicit type conversion (possible loss of data)
+    #pragma warning (error : 4100) // unreferenced formal parameter
+    #pragma warning (error : 4018) // signed/unsigned mismatch
+    #pragma warning (error : 4996) // deprecated / unsafe function call
+    #pragma warning (error : 4456) // declaration hides previous local declaration
+    #pragma warning (error : 4065) // switch contains 'default' but no 'case' labels
+    #pragma warning (error : 4189) // local variable initialized but not referenced
+    #pragma warning (error : 4172) // returning address of local variable or temporary
 #endif
 
 /// USER_SECTION_START 5
@@ -69,18 +67,16 @@ If you don't want this code in your library, don't remove it! Just make it comme
 /// USER_SECTION_END
 
 #if defined(LIBRARY_NAME_LIB)
-	#pragma warning (error : 4715) // not all control paths return a value should be an error instead of a warning
-	#pragma warning (error : 4700) // uninitialized local variable used should be an error instead of a warning
-	#pragma warning (error : 4244) // Implicit conversions between data types 
-	#pragma warning (error : 4100) // Unused variables
-	#pragma warning (error : 4018) // Type mismatch 
-	#pragma warning (error : 4996) // Unsafe function calls
-	#pragma warning (error : 4456) // declaration of 'x' hides previous local declaration
-	#pragma warning (error : 4065) // switch statement contains 'default' but no 'case' labels
-	#pragma warning (error : 4189) // Unused return value
-	#pragma warning (error : 4996) // unsafe function calls
-	#pragma warning (error : 4018) // signed/unsigned mismatch
-	#pragma warning (error : 4172) // Returning address of local temporary object
+    #pragma warning (error : 4715) // not all control paths return a value
+    #pragma warning (error : 4700) // uninitialized local variable used
+    #pragma warning (error : 4244) // implicit type conversion (possible loss of data)
+    #pragma warning (error : 4100) // unreferenced formal parameter
+    #pragma warning (error : 4018) // signed/unsigned mismatch
+    #pragma warning (error : 4996) // deprecated / unsafe function call
+    #pragma warning (error : 4456) // declaration hides previous local declaration
+    #pragma warning (error : 4065) // switch contains 'default' but no 'case' labels
+    #pragma warning (error : 4189) // local variable initialized but not referenced
+    #pragma warning (error : 4172) // returning address of local variable or temporary
 #endif
 
 /// USER_SECTION_START 5

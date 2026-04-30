@@ -27,6 +27,13 @@ The **LIBRARY_NAME** variable holds the name of the library.
 
 ---
 ``` cmake
+# Library version (used for CMake package version file)
+set(LIBRARY_VERSION "1.0.0")                    # <AUTO_REPLACED>
+```
+The **LIBRARY_VERSION** variable holds the version of the library. It is used to generate the version constants in `LibraryName_meta.h` and for the CMake package export. Use semantic versioning (major.minor.patch).
+
+---
+``` cmake
 # Define is only active if the library is built
 set(LIB_DEFINE LIBRARY_NAME_LIB)                # <AUTO_REPLACED>
 ```
@@ -124,22 +131,22 @@ class LIBRARY_NAME_API LibraryInfo
 ...
 public:
 ...
-    // Current version of the library
-    static constexpr int versionMajor				= 0;
-    static constexpr int versionMinor				= 0;
-    static constexpr int versionPatch				= 0;
+    // Version — auto-generated from LIBRARY_VERSION in CMakeLists.txt.
+    static constexpr int versionMajor               = LibraryName_VERSION_MAJOR;
+    static constexpr int versionMinor               = LibraryName_VERSION_MINOR;
+    static constexpr int versionPatch               = LibraryName_VERSION_PATCH;
 
     static constexpr Version version{ versionMajor, versionMinor, versionPatch };
 
-    // Library name
-    static constexpr const char* name				= "LibraryName";
-    static constexpr const char* author				= "";
-    static constexpr const char* email				= "";
-    static constexpr const char* website			= "";
-    static constexpr const char* license			= "MIT";
-    static constexpr const char* compilationDate                = __DATE__;
-    static constexpr const char* compilationTime                = __TIME__;
+    // Metadata — edit these fields to describe your library.
+    static constexpr const char* name               = LibraryName_LIBRARY_NAME;
+    static constexpr const char* author             = "";
+    static constexpr const char* email              = "";
+    static constexpr const char* website            = "";
+    static constexpr const char* license            = "MIT";
+    static constexpr const char* compilationDate    = __DATE__;
+    static constexpr const char* compilationTime    = __TIME__;
     ...
 };
 ```
-This header is used to do define informations about your library. It is self-explanatory which parameters stand for what. Do not change the variable names.
+This header defines metadata about your library. The version numbers and library name are auto-generated from `LIBRARY_VERSION` and `LIBRARY_NAME` in CMakeLists.txt via the `LibraryName_meta.h` template. Edit the **author**, **email**, **website**, and **license** fields to describe your library. Do not change the variable names.

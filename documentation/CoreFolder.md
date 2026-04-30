@@ -72,14 +72,12 @@ This header contains the dllimport/export switch.
 ``` C++
 ...
 #ifndef BUILD_STATIC
-    #pragma message("LIBRARY_NAME_LIB is a shared library")
     #if defined(LIBRARY_NAME_LIB)
         #define LIBRARY_NAME_API __declspec(dllexport)
     #else
         #define LIBRARY_NAME_API __declspec(dllimport)
     #endif
-#else 
-    #pragma message("LIBRARY_NAME_LIB is a static library")
+#else
     #define LIBRARY_NAME_API
 #endif
 ...
@@ -96,17 +94,16 @@ To help a little to find some programming errors, some warnings are changed to e
 ``` C++
 ...
 #if defined(LIBRARY_NAME_LIB)
-	#pragma warning (error : 4715) // not all control paths return a value should be an error instead of a warning
-	#pragma warning (error : 4700) // uninitialized local variable used should be an error instead of a warning
-	#pragma warning (error : 4244) // Implicit conversions between data types 
-	#pragma warning (error : 4100) // Unused variables
-	#pragma warning (error : 4018) // Type mismatch 
-	#pragma warning (error : 4996) // Unsafe function calls
-	#pragma warning (error : 4456) // declaration of 'x' hides previous local declaration
-	#pragma warning (error : 4065) // switch statement contains 'default' but no 'case' labels
-	#pragma warning (error : 4189) // Unused return value
-	#pragma warning (error : 4996) // unsafe function calls
-	#pragma warning (error : 4018) // signed/unsigned mismatch
+    #pragma warning (error : 4715) // not all control paths return a value
+    #pragma warning (error : 4700) // uninitialized local variable used
+    #pragma warning (error : 4244) // implicit type conversion (possible loss of data)
+    #pragma warning (error : 4100) // unreferenced formal parameter
+    #pragma warning (error : 4018) // signed/unsigned mismatch
+    #pragma warning (error : 4996) // deprecated / unsafe function call
+    #pragma warning (error : 4456) // declaration hides previous local declaration
+    #pragma warning (error : 4065) // switch contains 'default' but no 'case' labels
+    #pragma warning (error : 4189) // local variable initialized but not referenced
+    #pragma warning (error : 4172) // returning address of local variable or temporary
 #endif
 ...
 ``` 
@@ -119,17 +116,16 @@ Using the user sections, you can comment the whole section out.
 /// USER_SECTION_END
 
 #if defined(LIBRARY_NAME_LIB)
-	#pragma warning (error : 4715) // not all control paths return a value should be an error instead of a warning
-	#pragma warning (error : 4700) // uninitialized local variable used should be an error instead of a warning
-	#pragma warning (error : 4244) // Implicit conversions between data types 
-	#pragma warning (error : 4100) // Unused variables
-	#pragma warning (error : 4018) // Type mismatch 
-	#pragma warning (error : 4996) // Unsafe function calls
-	#pragma warning (error : 4456) // declaration of 'x' hides previous local declaration
-	#pragma warning (error : 4065) // switch statement contains 'default' but no 'case' labels
-	#pragma warning (error : 4189) // Unused return value
-	#pragma warning (error : 4996) // unsafe function calls
-	#pragma warning (error : 4018) // signed/unsigned mismatch
+    #pragma warning (error : 4715) // not all control paths return a value
+    #pragma warning (error : 4700) // uninitialized local variable used
+    #pragma warning (error : 4244) // implicit type conversion (possible loss of data)
+    #pragma warning (error : 4100) // unreferenced formal parameter
+    #pragma warning (error : 4018) // signed/unsigned mismatch
+    #pragma warning (error : 4996) // deprecated / unsafe function call
+    #pragma warning (error : 4456) // declaration hides previous local declaration
+    #pragma warning (error : 4065) // switch contains 'default' but no 'case' labels
+    #pragma warning (error : 4189) // local variable initialized but not referenced
+    #pragma warning (error : 4172) // returning address of local variable or temporary
 #endif
 
 /// USER_SECTION_START 5
@@ -139,8 +135,9 @@ Using the user sections, you can comment the whole section out.
 ``` 
 
 ### LibraryName_info.h
-This header contains the class ```LibraryInfo```, it contains some informations about the library.
-It also contains a function to create a QWidget with the library infos.
+This header contains the class ```LibraryInfo```, it contains some information about the library.
+It also contains a function to create a QWidget with the library info.
+Version numbers and the library name are auto-generated from the `LIBRARY_VERSION` and `LIBRARY_NAME` variables in CMakeLists.txt via the `LibraryName_meta.h` template.
 ``` C++
 ...
 namespace LibraryNamespace
@@ -150,44 +147,58 @@ namespace LibraryNamespace
 
 /// USER_SECTION_END
 
+	// Compile-time metadata about the library (non-instantiable).
 	class LIBRARY_NAME_API LibraryInfo
 	{
 		LibraryInfo() = delete;
 		LibraryInfo(const LibraryInfo&) = delete;
 	public:
-	
+
+		// Semantic version triplet with full comparison operators.
 		struct Version
 		{
 			int major;
 			int minor;
 			int patch;
 
-			// compare two versions
 			bool operator<(const Version& other) const;
-
 			bool operator==(const Version& other) const;
 			bool operator!=(const Version& other) const;
 			bool operator>(const Version& other) const;
 			bool operator<=(const Version& other) const;
 			bool operator>=(const Version& other) const;
+
+			// Returns the version formatted as "MM.mm.pppp" with leading zeros.
 			std::string toString() const;
 		};
 
-		// Current version of the library
-		static constexpr int versionMajor               = 0;
-		static constexpr int versionMinor               = 0;
-		static constexpr int versionPatch               = 0;
+		// Version — auto-generated from LIBRARY_VERSION in CMakeLists.txt.
+		static constexpr int versionMajor               = LibraryName_VERSION_MAJOR;
+		static constexpr int versionMinor               = LibraryName_VERSION_MINOR;
+		static constexpr int versionPatch               = LibraryName_VERSION_PATCH;
 
 		static constexpr Version version{ versionMajor, versionMinor, versionPatch };
 
-		// Library name
-		static constexpr const char* name               = "LibraryName";
+		// Metadata — edit these fields to describe your library.
+		static constexpr const char* name               = LibraryName_LIBRARY_NAME;
 		static constexpr const char* author             = "";
 		static constexpr const char* email              = "";
 		static constexpr const char* website            = "";
 		static constexpr const char* license            = "MIT";
 		static constexpr const char* compilationDate    = __DATE__;
 		static constexpr const char* compilationTime    = __TIME__;
+
+		// Print all metadata to stdout.
+		static void printInfo();
+		// Print all metadata to the given stream.
+		static void printInfo(std::ostream& stream);
+		// Return all metadata as a multi-line string.
+		static std::string getInfoStr();
+
+		// Create a QWidget displaying the library metadata.
+		// Requires QT_ENABLE=ON and "Widgets" in QT_MODULES; returns nullptr otherwise.
+		// The caller takes ownership of the widget.
+		static QWidget *createInfoWidget(QWidget* parent = nullptr, bool disableHyperlink = false);
         ...
     };
     ...

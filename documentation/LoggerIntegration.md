@@ -105,7 +105,7 @@ namespace LibraryNamespace
         : customLogger("customLoggerName")
     {
         // Set the custom logger as child of the library logger
-        customLogger.setParentID(Logger::getParentID())
+        customLogger.setParentID(Logger::getParentID());
     }   
     MyClass::~MyClass()
     {

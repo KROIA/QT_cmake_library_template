@@ -59,6 +59,10 @@ The file **CMakeLists.txt** in the root folder needs special replacements:
 ... Original
 # Name of the library
 set(LIBRARY_NAME LibraryName)                   # <AUTO_REPLACED>
+
+# Library version (used for CMake package version file)
+set(LIBRARY_VERSION "1.0.0")                    # <AUTO_REPLACED>
+
 # Define is only active if the library is built
 set(LIB_DEFINE LIBRARY_NAME_LIB)                # <AUTO_REPLACED>
 # macro to enable profiling
@@ -69,6 +73,10 @@ set(LIB_PROFILE_DEFINE LIBRARY_NAME_SHORT_PROFILING)  # <LIB_PROFILE_DEFINE>
 ... Modified
 # Name of the library
 set(LIBRARY_NAME MyLibrary)                   # <AUTO_REPLACED>
+
+# Library version (used for CMake package version file)
+set(LIBRARY_VERSION "1.0.0")                    # <AUTO_REPLACED>
+
 # Define is only active if the library is built
 set(LIB_DEFINE MY_LIBRARY_LIB)                # <AUTO_REPLACED>
 # macro to enable profiling

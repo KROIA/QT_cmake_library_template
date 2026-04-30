@@ -43,3 +43,5 @@ include
 lib
 LICENSE.APACHE
 LICENSE.MIT
+
+.claude/
