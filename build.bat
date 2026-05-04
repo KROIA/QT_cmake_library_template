@@ -40,9 +40,9 @@ REM Erstelle Buildpfad
 mkdir %buildType%
 REM Bewege in den Buildpfad
 cd %buildType%
-REM cmake Befehl f�rs konfigurieren
+REM cmake Befehl fürs konfigurieren
 cmake -G %generator% -A %platform% -DQT_DEPLOY=ON -DRELATIVE_BUILD_FOLDER="%buildFolder%" -DCMAKE_BUILD_TYPE=%buildType% -DCMAKE_INSTALL_PREFIX="%installPrefix%" -DCMAKE_CXX_FLAGS="/EHsc /MP" -DCMAKE_C_FLAGS="/EHsc /MP" "%projectRootPath%"
-REM cmake Befehl f�rs kompilieren
+REM cmake Befehl fürs kompilieren
 cmake --build . --config %buildType% --target install
 
 if %errorlevel% neq 0 (
