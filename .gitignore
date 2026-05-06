@@ -44,6 +44,6 @@ lib
 LICENSE.APACHE
 LICENSE.MIT
 
-.claude/
-
 tasks/
+
+.claude/settings.local.json

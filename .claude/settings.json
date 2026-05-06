@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(git status)",
+      "Bash(git status:*)",
+      "Bash(git diff)",
+      "Bash(git diff:*)",
+      "Bash(git log)",
+      "Bash(git log:*)",
+      "Bash(git branch)",
+      "Bash(git branch:*)",
+      "Bash(git show)",
+      "Bash(git show:*)",
+      "Bash(git remote -v)",
+      "Bash(ls)",
+      "Bash(ls:*)",
+      "Bash(cmake --version)",
+      "Bash(cat:*)",
+      "Read",
+      "Glob",
+      "Grep"
+    ],
+    "ask": [
+      "Bash(git commit)",
+      "Bash(git commit:*)",
+      "Bash(git add)",
+      "Bash(git add:*)",
+      "Bash(git tag)",
+      "Bash(git tag:*)",
+      "Bash(git merge)",
+      "Bash(git merge:*)",
+      "Bash(git rebase)",
+      "Bash(git rebase:*)",
+      "Bash(git reset)",
+      "Bash(git reset:*)"
+    ],
+    "deny": [
+      "Bash(git push)",
+      "Bash(git push:*)",
+      "Bash(git checkout)",
+      "Bash(git checkout:*)",
+      "Bash(git switch)",
+      "Bash(git switch:*)",
+      "Write(**/.env)",
+      "Write(**/.env.*)",
+      "Write(**/credentials.*)",
+      "Write(**/*.key)",
+      "Write(**/*.pem)",
+      "Write(**/*.pfx)",
+      "Edit(**/.env)",
+      "Edit(**/.env.*)",
+      "Edit(**/credentials.*)",
+      "Edit(**/*.key)",
+      "Edit(**/*.pem)",
+      "Edit(**/*.pfx)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "if": "Bash(git commit*)",
+            "command": "echo '{\"systemMessage\":\"PM pre-commit reminder: (1) verify CMakeLists.txt LIBRARY_VERSION; if changed, ask user about new-version rollout. (2) Update changelogs/<version>.md with finished tasks. (3) Move done tasks from .claude/TASKS.md to .claude/ProjectManager/FINISHED_TASKS.md. (4) Push is DENIED per PREFERENCES.md.\"}'"
+          }
+        ]
+      }
+    ]
+  }
+}
