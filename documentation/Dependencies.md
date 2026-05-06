@@ -14,6 +14,10 @@ The downloaded sources are cached in:
 - [Dependency load order](#dependency-load-order)
 - [Dependency CMake file example](#dependencyCmakeFile)
 
+## Generator propagation to subbuilds
+
+FetchContent runs each dependency through a small sub-cmake invocation (the "subbuild"), which writes its own `CMakeCache.txt`. To keep that subbuild cache consistent with the outer project across reconfigures, `cmake/utility.cmake` forwards the outer project's `CMAKE_GENERATOR`, and — when set — `CMAKE_GENERATOR_PLATFORM`, `CMAKE_GENERATOR_TOOLSET`, and `CMAKE_MAKE_PROGRAM` as cache entries before any `FetchContent_MakeAvailable` call. Without this, a first configure under, for example, "Visual Studio 17 2022" could end up with subbuilds cached as Ninja (or vice versa), and every subsequent regenerate would abort with `Does not match the generator used previously` until the dependency caches were wiped manually. The forwarding only runs in the top-level project, so this template still composes cleanly when consumed as a FetchContent dependency itself.
+
 ## Requirements
 - Your dependency must be available on GitHub (or as a local folder — see [Local dependencies](#local-dependencies))
 - You need a [dependency CMake file](#dependencyCmakeFile) for your dependency

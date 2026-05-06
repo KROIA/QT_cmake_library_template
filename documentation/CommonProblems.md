@@ -47,6 +47,42 @@ Install the required version or change the required version in the root CMakeLis
 
 
 
+### CMake 4.x rejects old policy versions (easy_profiler and similar)
+> <p style="font-size: 5px;">CTRL+F Keywords:<br>Compatibility with CMake < 3.5 has been removed CMAKE_POLICY_VERSION_MINIMUM easy_profiler cmake_minimum_required</p>
+
+CMake 4.x removed compatibility with policies older than 3.5. Dependencies pinned to a tag whose `cmake_minimum_required(VERSION 2.x)` still applies (for example easy_profiler v2.1.0) will fail the first configure with a message ending in:
+
+```
+... add -DCMAKE_POLICY_VERSION_MINIMUM=3.5 to try configuring anyway.
+```
+
+`build.bat` already passes `"-DCMAKE_POLICY_VERSION_MINIMUM=3.5"` (quoted) to cmake, so a normal `build.bat` run is unaffected. The flag is a no-op on CMake < 4.0.
+
+**PowerShell quoting trap.** If you invoke cmake manually from PowerShell, the flag MUST be quoted:
+
+```powershell
+cmake "-DCMAKE_POLICY_VERSION_MINIMUM=3.5" ...
+```
+
+Unquoted, PowerShell parses `-DCMAKE_POLICY_VERSION_MINIMUM=3.5` as the expression `(3).5` (member access on the integer `3`), so cmake only ever receives `-DCMAKE_POLICY_VERSION_MINIMUM=3` and the configure still fails — silently misleading. cmd.exe and Git Bash do not have this trap, but quoting works there too.
+
+### Git Bash mangles slash-prefixed cmake flags
+> <p style="font-size: 5px;">CTRL+F Keywords:<br>MSYS path conversion /EHsc /MP C1083 source file not opened Files/Git Git Bash MSYS_NO_PATHCONV</p>
+
+If you invoke cmake manually from Git Bash on Windows with a slash-prefixed compiler flag, for example `cmake -DCMAKE_CXX_FLAGS="/EHsc /MP" ...`, MSYS rewrites the leading `/` into a Windows path and cmake ends up receiving something like `C:/Program Files/Git/EHsc`. The build then fails with:
+
+```
+error C1083: source file not opened: "Files/Git/EHsc"
+```
+
+**Workaround.** Either prefix the command with `MSYS_NO_PATHCONV=1` to disable the rewrite, or run the same command from `cmd.exe` or PowerShell, which do not perform path conversion:
+
+```bash
+MSYS_NO_PATHCONV=1 cmake -DCMAKE_CXX_FLAGS="/EHsc /MP" ...
+```
+
+`build.bat` is unaffected because it runs in `cmd.exe`.
+
 ### My problem is not listed
 Some CMake problems are difficult to tackle, some of them are strange. If I encounter such problems, i do the following steps. If one step does not work, go to the next step.
  1) **Try to reconfigure the CMake cache**

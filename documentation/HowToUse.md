@@ -61,6 +61,16 @@ For a clean build, delete this folder and reconfigure the CMake cache.
 
 An **installation** folder gets created when you install the library. It contains a copy of the binaries, libraries, and header files ready to include in any other project. 
 
+### Cleaning the build
+`build.bat` provides three clean targets so you do not have to wipe everything by hand:
+
+* `build.bat clean` — removes `build/Debug`, `build/Release`, and `installation/`. **Preserves** the dependency cache under `build/dependencies/`, so the next build does not have to re-fetch external dependencies.
+* `build.bat clean-deps` — removes `build/dependencies/cache/*-build` and `build/dependencies/cache/*-subbuild`. **Preserves** the `*-src` source downloads, so dependencies are not re-fetched, only re-configured. Useful after a generator mismatch.
+* `build.bat clean-all` — removes everything under `build/` and `installation/`. Forces a full re-fetch on the next build.
+
+All targets are idempotent — they are safe to run from a fresh checkout or any partial state.
+Run `build.bat help` to print the list.
+
 ---
 
 ## Library setup
