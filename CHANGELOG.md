@@ -6,7 +6,7 @@
 
 | Version | Status | File |
 |---------|--------|------|
-| 1.7.0   | in progress | [changelogs/1.7.0.md](changelogs/1.7.0.md) |
+| 1.7.0   | released 2026-05-06 | [changelogs/1.7.0.md](changelogs/1.7.0.md) |
 | 1.6.2   | released | _no per-version file (pre-PM)_ |
 
 > Whenever a new `changelogs/X.Y.Z.md` is added, append a row here.
