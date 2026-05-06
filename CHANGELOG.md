@@ -1,8 +1,12 @@
 # Changelog
 
-Per-version detail lives in [`changelogs/`](changelogs/). Latest first.
+> **Source of truth for the project version:** `CMakeLists.txt`, line 8 (`## Template version: X.Y.Z`). No other file declares the version. Per-version changelog filenames in [`changelogs/`](changelogs/) are derived from that value.
 
-| Version | Date | File |
-|---------|------|------|
-| 1.7.0   | _in progress_ | [changelogs/1.7.0.md](changelogs/1.7.0.md) |
+## Versions
+
+| Version | Status | File |
+|---------|--------|------|
+| 1.7.0   | in progress | [changelogs/1.7.0.md](changelogs/1.7.0.md) |
 | 1.6.2   | released | _no per-version file (pre-PM)_ |
+
+> Whenever a new `changelogs/X.Y.Z.md` is added, append a row here.

@@ -3,7 +3,7 @@
 ## What this is
 A **CMake project template** for creating C++ libraries targeting Qt applications. It is a *template repo*, not a single library — downstream projects copy this and use [Cmake Lib Creator](https://github.com/KROIA/CmakeLibCreator) to instantiate a real library from it.
 
-Current template version: **1.7.0** (see `CMakeLists.txt`).
+**Source of truth for the version:** `CMakeLists.txt` line 8 — `## Template version: X.Y.Z`. Do not duplicate the version literal in any markdown file; reference this line instead.
 
 ## Goals
 - Modular, easy-to-integrate library structure.

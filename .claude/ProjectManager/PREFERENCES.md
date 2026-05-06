@@ -10,6 +10,12 @@ Re-read on every bootstrap. User can change any of these anytime — honor the l
 - One file per released version. Sections: Features / Bugfixes / Deprecations.
 - Customer-friendly language preferred for finished-task entries.
 
+## Version source of truth
+- **Single source of truth:** `CMakeLists.txt` line 8 — `## Template version: X.Y.Z`.
+- Do **NOT** hardcode the version literal in any markdown file (CHANGELOG, PROJECT_STATUS, PROJECT_SUMMARY, FINISHED_TASKS, etc.). Reference the CMakeLists line instead.
+- Per-version changelog filenames (`changelogs/X.Y.Z.md`) are derived from that value — these filenames are the only allowed places where the literal appears.
+- The pre-commit hook reads this line to detect version bumps.
+
 ## Definition of Done gates
 - **Manual user code review:** REQUIRED before tasks marked `done`.
 - **Manual user testing:** REQUIRED before tasks marked `done` (no automated test suite).

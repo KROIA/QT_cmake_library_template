@@ -1,18 +1,13 @@
 # Project Status
 
-**Version:** 1.7.0
+**Version:** see `CMakeLists.txt` line 8 (single source of truth — `## Template version: X.Y.Z`).
 **Branch:** main
 **Last updated:** 2026-05-06
 
 ## Current state
-- PM harness initialized.
-- No active tasks. No open issues. Awaiting user direction.
-
-## Working tree
-- `CMakeLists.txt` modified (uncommitted)
-- `CMakeSettings.json` deleted (uncommitted)
-- `CLAUDE.md` (post-init lean briefing pending)
+- PM harness committed.
+- In progress: removal of legacy `CMakeSettings.json` (replaced by `CMakePresets.json`) — staged, awaiting user manual test before commit.
 
 ## Next likely actions
-- User runs code-review agent to populate `ISSUES.md`, OR
-- User defines tasks directly.
+- User confirms build via CMakePresets, then PM commits the cleanup + changelog/finished-task entries.
+- Optional: run code-review agent to populate `ISSUES.md`.

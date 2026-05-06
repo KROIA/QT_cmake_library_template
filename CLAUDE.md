@@ -38,7 +38,8 @@ The full operating spec lives at the original setup file the user pointed you to
 
 ## This project — quick facts
 
-- **Type:** CMake template for C++/Qt libraries. Template version `1.7.0` (in `CMakeLists.txt`).
+- **Type:** CMake template for C++/Qt libraries.
+- **Version source of truth:** `CMakeLists.txt` line 8 (`## Template version: X.Y.Z`). Never hardcode the version literal in markdown — reference this line.
 - **Branches:** `main` = template, `dependencies` = dep files. **Never switch branches without explicit user instruction.**
 - **VCS:** commit on explicit user command only. **Push denied.** `.claude/` and `CLAUDE.md` are committed.
 - **DoD gates:** manual user code review + manual user testing both required. No unit-test agent.
