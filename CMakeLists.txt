@@ -282,6 +282,18 @@ if(COMPILE_UNITTESTS AND NOT LibraryName_NO_UNITTESTS)
     add_subdirectory(unittests)
 endif()
 
+# Restore the top-level project's cmake helpers after every FetchContent dep
+# has been processed. Older template-derived dependencies carry their own
+# copies of cmake/utility.cmake and cmake/ExampleMaster.cmake and call
+# include() on them from their own CMakeLists.txt, which silently
+# *redefines* the global windeployqt() and exampleMaster() functions with
+# the dep's older version. Without this re-include, any add_subdirectory()
+# below (e.g. a user-added application module in USER_SECTION_START 6)
+# would call those stale functions and lose features such as the
+# POST_BUILD Qt deploy.
+include(cmake/utility.cmake)
+include(cmake/ExampleMaster.cmake)
+
 ## USER_SECTION_START 6
 
 ## USER_SECTION_END
