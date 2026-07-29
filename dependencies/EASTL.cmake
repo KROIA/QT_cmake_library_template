@@ -4,7 +4,7 @@ include(FetchContent)
 function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB INCLUDE_PATHS)
     set(LIB_NAME EASTL)
 	set(LIB_MACRO_NAME EASTL_LIBRARY_AVAILABLE)
-    set(GIT_REPO https://github.com/electronicarts/EASTL.git)
+    set(GIT_REPO https://github.com/KROIA/EASTL.git)
     set(GIT_TAG master)
 
     downloadExternalLibrary()
