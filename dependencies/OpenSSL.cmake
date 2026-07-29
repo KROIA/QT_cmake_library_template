@@ -40,15 +40,43 @@ function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB INCLUDE
 
             ## Copy to build output directories at configure time so executables
             ## launched directly from the build tree (not via install) also find them.
-            ## Visual Studio multi-config puts binaries under build/Debug and build/Release.
-            foreach(_cfg Debug Release RelWithDebInfo MinSizeRel)
-                set(_dest "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_cfg}")
+            ##
+            ## CMAKE_RUNTIME_OUTPUT_DIRECTORY contains a $<CONFIG> generator
+            ## expression (see the top-level CMakeLists.txt), which file() does
+            ## NOT evaluate — using it here would try to create a literal
+            ## "$<CONFIG>" directory and fail. Derive a genex-free base instead:
+            ##   1. RUNTIME_OUTPUT_DIRECTORY from cmake/dependencies.cmake, or
+            ##   2. CMAKE_RUNTIME_OUTPUT_DIRECTORY with the genex stripped, or
+            ##   3. CMAKE_BINARY_DIR as a last resort.
+            if(DEFINED RUNTIME_OUTPUT_DIRECTORY AND RUNTIME_OUTPUT_DIRECTORY)
+                set(_out_base "${RUNTIME_OUTPUT_DIRECTORY}")
+            else()
+                set(_out_base "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
+                string(REGEX REPLACE "/?\\$<CONFIG(URATION)?>/?$" "" _out_base "${_out_base}")
+            endif()
+            if(NOT _out_base OR _out_base MATCHES "\\$<")
+                set(_out_base "${CMAKE_BINARY_DIR}")
+            endif()
+
+            ## Per-config subdirectories. Because the output dir embeds $<CONFIG>,
+            ## single-config generators (Ninja) also emit into <base>/<Config>.
+            if(CMAKE_CONFIGURATION_TYPES)
+                set(_cfgs ${CMAKE_CONFIGURATION_TYPES})
+            elseif(CMAKE_BUILD_TYPE)
+                set(_cfgs ${CMAKE_BUILD_TYPE})
+            else()
+                set(_cfgs Debug Release RelWithDebInfo MinSizeRel)
+            endif()
+
+            foreach(_cfg ${_cfgs})
+                set(_dest "${_out_base}/${_cfg}")
                 file(MAKE_DIRECTORY "${_dest}")
                 file(COPY ${_ALL_DLLS} DESTINATION "${_dest}")
             endforeach()
 
-            ## Also copy to the base output directory for single-config generators (Ninja)
-            file(COPY ${_ALL_DLLS} DESTINATION "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
+            ## Also copy to the base output directory as a fallback
+            file(MAKE_DIRECTORY "${_out_base}")
+            file(COPY ${_ALL_DLLS} DESTINATION "${_out_base}")
         endif()
 
     else()
